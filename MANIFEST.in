@@ -1,0 +1,9 @@
+include LICENSE
+include README.md
+
+# Excluding test app and project files
+exclude test_app *
+exclude urls.py
+exclude wsgi.py
+exclude settings.py
+exclude manage.py

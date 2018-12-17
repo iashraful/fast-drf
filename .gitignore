@@ -1,0 +1,9 @@
+.vs-code
+.idea
+*.pyc
+__pycache__/
+db.*
+*.sqlite3
+
+*.egg*
+dist
