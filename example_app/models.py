@@ -12,7 +12,7 @@ class UserProfile(ExposeApiModelMixin, models.Model):
     dob = models.DateField(null=True)
 
     class Meta:
-        app_label = 'test_app'
+        app_label = 'example_app'
 
     @classmethod
     def exposed_api(cls, *args, **kwargs):
