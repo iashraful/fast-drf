@@ -3,7 +3,7 @@ from django.conf import settings
 from django.urls import path
 from importlib import import_module
 
-from fast_drf.mixins.expose_api_viewset_mixin import ExposeApiViewsetMixin
+from fast_drf.core.api_generator import APIGenerator
 
 
 class BasicRouter(object):
@@ -19,7 +19,7 @@ class BasicRouter(object):
                     if not _model_api_config:
                         continue
                     _model_api_config.update({'model': model})
-                    expose_api_object = ExposeApiViewsetMixin(**_model_api_config)
+                    expose_api_object = APIGenerator(**_model_api_config)
                     _viewset_class = expose_api_object.get_runtime_viewset(**_model_api_config)
                     _urls += [path(str(_model_api_config['api_url']), _viewset_class.as_view(),
                                    name=str(_model_api_config['api_url']))]

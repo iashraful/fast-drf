@@ -2,7 +2,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework import serializers
 
 
-class ExposeApiViewsetMixin(object):
+class APIGenerator(object):
     permission_classes = None
     serializer_class = None
     viewset_class = None
