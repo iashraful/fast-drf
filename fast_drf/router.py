@@ -21,8 +21,14 @@ class BasicRouter(object):
                     _model_api_config.update({'model': model})
                     expose_api_object = APIGenerator(**_model_api_config)
                     _viewset_class = expose_api_object.get_runtime_viewset(**_model_api_config)
-                    _urls += [path(str(_model_api_config['api_url']), _viewset_class.as_view(),
+                    _urls += [path(str(cls.get_url_string(_model_api_config['api_url'])), _viewset_class.as_view(),
                                    name=str(_model_api_config['api_url']))]
             except ModuleNotFoundError:
                 continue
         return _urls
+
+    @classmethod
+    def get_url_string(cls, value):
+        if settings.APPEND_SLASH:
+            return "{0}/".format(value)
+        return value
