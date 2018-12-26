@@ -25,11 +25,26 @@ class UserProfile(ExposeApiModelMixin, models.Model):
 class TestUser(UserProfile):
     class Meta:
         proxy = True
-        app_label = 'core'
+        app_label = 'example_app'
 
     @classmethod
     def exposed_api(cls, *args, **kwargs):
         api_configs = {
             "api_url": "test-users",
+        }
+        return api_configs
+
+
+class Post(ExposeApiModelMixin, models.Model):
+    title = models.CharField(max_length=256, null=True)
+    description = models.TextField(null=True)
+
+    class Meta:
+        app_label = 'example_app'
+
+    @classmethod
+    def exposed_api(cls, *args, **kwargs):
+        api_configs = {
+            "api_url": "posts",
         }
         return api_configs
