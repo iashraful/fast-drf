@@ -96,3 +96,8 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+# Fast DRF Settings
+FAST_API_ENABLED_APPS = [
+    'example_app'
+]
