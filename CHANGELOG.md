@@ -1,12 +1,13 @@
-## 0.0.1
+## 0.1.2
 **ADDED**
-* Model Based api writing
-* Ability to override Serializer, View class, queryset
-* Work on proxy model
+* Nothing
+
+**UPDATED**
+* Nothing
 
 **BUG FIXED**
-* Nothing as it's initial release
-
+* pip install failed issue
+* twine upload issue
 
 ## 0.1.1
 **ADDED**
@@ -20,3 +21,12 @@
 **BUG FIXED**
 * Fixed wrong queryset bug
 * Added loop iteration improvements
+
+## 0.0.1
+**ADDED**
+* Model Based api writing
+* Ability to override Serializer, View class, queryset
+* Work on proxy model
+
+**BUG FIXED**
+* Nothing as it's initial release
