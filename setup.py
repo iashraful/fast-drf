@@ -9,19 +9,20 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='fast-drf',
-    version='0.1.1',
+    version='0.1.2',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',
     description='A simple model based API configurator written in Python and based of Django and Django REST Framework',
     long_description=README,
-    url='',
+    url='https://mrrobin.me',
     author='Ashraful Islam',
     author_email='ashrafulrobin3@gmail.com',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
         'Framework :: Django :: 2.1',
+        'Framework :: Django REST Framework :: 3.*',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
@@ -32,4 +33,8 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
+    install_requires=[
+        'django>=2.0',
+        'djangorestframework>=3.6',
+    ]
 )
