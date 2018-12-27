@@ -13,7 +13,7 @@ class ExposeApiModelMixin(object):
             "api_url": "",  # (REQUIRED)
             "version": "",  # (NOT REQUIRED) EX: 'v1', 'v2' default 'v1'
             "queryset": "",  # (NOT REQUIRED) default all
-            "api_viewset_class": "",  # (NOT REQUIRED) BaseViewset class
+            "viewset_class": "",  # (NOT REQUIRED) BaseViewset class
             "serializer_class": "",  # (NOT REQUIRED) default BaseEntitySerializer
             "permission_classes": "",  # (NOT REQUIRED) default set from settings
         }
