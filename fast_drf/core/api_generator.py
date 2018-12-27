@@ -1,5 +1,8 @@
-from rest_framework import serializers
+from rest_framework import serializers, viewsets
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.response import Response
+
+from fast_drf.core.viewset_generator import APIViewSetGenerator
 
 
 class APIGenerator(object):
@@ -32,25 +35,8 @@ class APIGenerator(object):
         :return: a viewset class
         """
         if self.viewset_class is None:
-            return self.make_runtime_viewset(**kwargs)
+            return APIViewSetGenerator.make_runtime_viewset(**kwargs)
         return self.viewset_class
-
-    def make_runtime_viewset(self, **func_kwargs):
-        """
-        Viewset Maker while it's not available on model. It's a generic viewset maker for any model
-        :param func_kwargs: all the extra params are accepted and pass to child
-        :return: return a viewset
-        """
-        class RunTimeViewset(ListCreateAPIView):
-            if self.permission_classes:
-                permission_classes = self.permission_classes
-            serializer_class = self.serializer_class
-            queryset = self.queryset
-
-            def get(self, request, *args, **kwargs):
-                return super(RunTimeViewset, self).get(request, *args, **kwargs)
-
-        return RunTimeViewset
 
     def get_runtime_serializer(self, **kwargs):
         """

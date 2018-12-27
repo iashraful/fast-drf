@@ -11,7 +11,13 @@ class ExposeApiModelMixin(object):
         This method holds a bunch of API configs and return like following...
         {
             "api_url": "",  # (REQUIRED)
-            "version": "",  # (NOT REQUIRED) EX: 'v1', 'v2' default 'v1'
+
+            # You must use from HTTPVerbsEnum. Like HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value
+            "allowed_methods": ['get', 'post', 'put', 'patch', 'delete'], # (NOT REQUIRED)
+
+            # slug_field is application 'put', 'patch', 'delete' these methods
+            "slug_field": "pk", # (NOT REQUIRED) DEFAULT [PK] (Must be model field, unique or primary key)
+
             "queryset": "",  # (NOT REQUIRED) default all
             "viewset_class": "",  # (NOT REQUIRED) BaseViewset class
             "serializer_class": "",  # (NOT REQUIRED) default BaseEntitySerializer
