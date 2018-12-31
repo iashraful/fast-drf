@@ -44,7 +44,12 @@ class Post(ExposeApiModelMixin, models.Model):
 
     @classmethod
     def exposed_api(cls, *args, **kwargs):
+        from .views import PostAPIView
+        from .serializers import PostPrivateSerializer
+
         api_configs = {
             "api_url": "posts",
+            # "viewset_class": PostAPIView,
+            "serializer_class": PostPrivateSerializer
         }
         return api_configs
