@@ -18,9 +18,12 @@ class APIGenerator(object):
         :return: a viewset class
         """
         # If not serializer is present
-        if not self.api_view.serializer_class:
+        if not self.api_view.serializer_class or (
+                self.api_view.viewset_class and not self.api_view.viewset_class.serializer_class):
             _serializer_class = self.get_runtime_serializer(**kwargs)
             self.api_view.serializer_class = _serializer_class
+            if self.api_view.viewset_class:
+                self.api_view.viewset_class.serializer_class = _serializer_class
             # Now serializer is available
         if self.api_view.viewset_class is None:
             return self.api_view.make_runtime_viewset(**kwargs)

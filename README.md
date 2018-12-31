@@ -5,6 +5,7 @@ It's easy and configurable.
 
 ### Quick Start
 * Install the library inside your  virtualenv by using pip `pip install fast-drf`
+* Add your apps to `FAST_API_ENABLED_APPS` on settings for best performance. Like, `FAST_API_ENABLED_APPS=['app_name', 'my_app']`
 * Update your every model or if you use base abstract model then it's good and less time you need. Update model like following,
 ```python
 from fast_drf.mixins.expose_api_model_mixin import ExposeApiModelMixin

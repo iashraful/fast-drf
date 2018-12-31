@@ -12,6 +12,7 @@ class BasicRouter(object):
     """
     BasicRouter is for making basic urls for django app.
     """
+
     @classmethod
     def get_urls(cls, **kwargs):
         """
@@ -32,8 +33,13 @@ class BasicRouter(object):
                     _model_api_config.update({'model': model})
                     expose_api_object = APIGenerator(**_model_api_config)
                     _viewset_class = expose_api_object.get_runtime_viewset(**_model_api_config)
-                    _urls += [path(str(cls.get_url_string(_model_api_config['api_url'])), _viewset_class.as_view({'get': 'list'}),
-                                   name=str(_model_api_config['api_url']))]
+                    _urls += [
+                        path(
+                            str(cls.get_url_string(_model_api_config['api_url'])),
+                            cls.get_viewset_class_view(view_class=_viewset_class),
+                            name=str(_model_api_config['api_url'])
+                        )
+                    ]
             except ModuleNotFoundError:
                 continue
         return _urls
@@ -43,3 +49,11 @@ class BasicRouter(object):
         if settings.APPEND_SLASH:
             return "{0}/".format(value)
         return value
+
+    @classmethod
+    def get_viewset_class_view(cls, view_class):
+        # TODO: I'll rewrite this nonsense try;except statement
+        try:
+            return view_class.as_view({'get': 'list'})
+        except Exception:
+            return view_class.as_view()
