@@ -40,11 +40,14 @@ class APIViewSetGenerator(object):
             serializer_class = self.serializer_class
             queryset = self.queryset
 
-            @classmethod
-            def custom_as_view(cls, **kwargs):
-                pass
-
             def list(self, request, **kwargs):
                 return Response(self.serializer_class(self.queryset, many=True).data)
+
+            def create(self, request, **kwargs):
+                serializer = self.serializer_class(data=request.data)
+                if serializer.is_valid(raise_exception=True):
+                    serializer.save()
+                    return Response(serializer.data)
+                return Response(serializer.data)
 
         return RunTimeViewset
