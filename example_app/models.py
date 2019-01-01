@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from fast_drf.mixins.expose_api_model_mixin import ExposeApiModelMixin
+from fast_drf.utils.enums import HTTPVerbsEnum
 
 
 class UserProfile(ExposeApiModelMixin, models.Model):
@@ -50,6 +51,7 @@ class Post(ExposeApiModelMixin, models.Model):
         api_configs = {
             "api_url": "posts",
             # "viewset_class": PostAPIView,
-            "serializer_class": PostPrivateSerializer
+            "serializer_class": PostPrivateSerializer,
+            "allowed_methods": [HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value]
         }
         return api_configs
