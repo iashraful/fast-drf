@@ -34,14 +34,18 @@ class APIViewSetGenerator(object):
         :return: return a viewset
         """
 
-        class RunTimeViewset(viewsets.ViewSet):
+        class RunTimeViewset(viewsets.ModelViewSet):
             if not self.permission_classes:
                 permission_classes = self.permission_classes
             serializer_class = self.serializer_class
             queryset = self.queryset
 
+            class Meta:
+                _model = self.model
+
             def list(self, request, **kwargs):
-                return Response(self.serializer_class(self.queryset, many=True).data)
+                _queryset = self.Meta._model.objects.all()
+                return Response(self.serializer_class(_queryset, many=True).data)
 
             def create(self, request, **kwargs):
                 serializer = self.serializer_class(data=request.data)
@@ -49,5 +53,8 @@ class APIViewSetGenerator(object):
                     serializer.save()
                     return Response(serializer.data)
                 return Response(serializer.data)
+
+            def get_queryset(self, *args, **kwargs):
+                return self.Meta._model.objects.all()
 
         return RunTimeViewset
