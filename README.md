@@ -23,9 +23,15 @@ class MyModel(ExposeApiModelMixin, models.Model):
         This method holds a bunch of API configs and return like following...
         {
             "api_url": "",  # (REQUIRED)
-            "version": "",  # (COMING SOON)(NOT REQUIRED) EX: 'v1', 'v2' default 'v1'
+
+            # You must use from HTTPVerbsEnum. Like HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value
+            "allowed_methods": ['get', 'post', 'put', 'patch', 'delete'], # (NOT REQUIRED)
+
+            # slug_field is application 'put', 'patch', 'delete' these methods
+            "slug_field": "pk", # (NOT REQUIRED) DEFAULT [PK] (Must be model field, unique or primary key)
+
             "queryset": "",  # (NOT REQUIRED) default all
-            "api_viewset_class": "",  # (NOT REQUIRED) BaseViewset class
+            "viewset_class": "",  # (NOT REQUIRED) BaseViewset class
             "serializer_class": "",  # (NOT REQUIRED) default BaseEntitySerializer
             "permission_classes": "",  # (NOT REQUIRED) default set from settings
         }
