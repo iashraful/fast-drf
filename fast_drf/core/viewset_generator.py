@@ -11,12 +11,13 @@ class APIViewSetGenerator(object):
     queryset = None
     model = None
 
-    def __init__(self, *args, **kwargs):
-        self.model = kwargs.get('model')
-        self.serializer_class = kwargs.get('serializer_class', None)
-        self.viewset_class = kwargs.get('viewset_class')
-        self.permission_classes = kwargs.get('permission_classes', [])
-        self.queryset = kwargs.get('queryset', self.get_queryset(**kwargs))
+    def __init__(self, *args, **main_kwargs):
+        self.model = main_kwargs.get('model')
+        self.serializer_class = main_kwargs.get('serializer_class', None)
+        self.viewset_class = main_kwargs.get('viewset_class')
+        self.permission_classes = main_kwargs.get('permission_classes', [])
+        self.queryset = main_kwargs.get('queryset', self.get_queryset(**main_kwargs))
+        self.lookup_field = main_kwargs.get('slug_field', 'pk')
 
     def get_queryset(self, *args, **kwargs):
         """
@@ -40,6 +41,7 @@ class APIViewSetGenerator(object):
             serializer_class = self.serializer_class
             queryset = self.queryset
             model = self.model
+            lookup_field = self.lookup_field
 
             def list(self, request, **kwargs):
                 # Here it's performing sub query in SQL. So, no performance loss. Just executing a big query
@@ -47,12 +49,18 @@ class APIViewSetGenerator(object):
                 _queryset = self.model.objects.filter(pk__in=self.queryset)
                 return Response(self.serializer_class(_queryset, many=True).data)
 
-            def create(self, request, **kwargs):
+            def create(self, request, *args, **kwargs):
                 serializer = self.serializer_class(data=request.data)
                 if serializer.is_valid(raise_exception=True):
                     serializer.save()
                     return Response(serializer.data)
                 return Response(serializer.data)
+
+            def retrieve(self, request, *args, **kwargs):
+                return super(RunTimeViewset, self).retrieve(request, *args, **kwargs)
+
+            def update(self, request, *args, **kwargs):
+                return super(RunTimeViewset, self).update(request, *args, **kwargs)
 
             def get_queryset(self, *args, **kwargs):
                 return self.model.objects.all()
