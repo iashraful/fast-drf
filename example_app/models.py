@@ -52,7 +52,7 @@ class Post(ExposeApiModelMixin, models.Model):
             "api_url": "posts",
             # "viewset_class": PostAPIView,
             "serializer_class": PostPrivateSerializer,
-            "allowed_methods": [HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value],
+            "allowed_methods": [HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value, HTTPVerbsEnum.PUT.value],
             "queryset": cls.objects.filter()
         }
         return api_configs
