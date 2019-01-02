@@ -39,12 +39,12 @@ class APIViewSetGenerator(object):
                 permission_classes = self.permission_classes
             serializer_class = self.serializer_class
             queryset = self.queryset
-
-            class Meta:
-                _model = self.model
+            model = self.model
 
             def list(self, request, **kwargs):
-                _queryset = self.Meta._model.objects.all()
+                # Here it's performing sub query in SQL. So, no performance loss. Just executing a big query
+                # not more than 1 query
+                _queryset = self.model.objects.filter(pk__in=self.queryset)
                 return Response(self.serializer_class(_queryset, many=True).data)
 
             def create(self, request, **kwargs):
@@ -55,6 +55,6 @@ class APIViewSetGenerator(object):
                 return Response(serializer.data)
 
             def get_queryset(self, *args, **kwargs):
-                return self.Meta._model.objects.all()
+                return self.model.objects.all()
 
         return RunTimeViewset
