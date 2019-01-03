@@ -49,7 +49,8 @@ class BasicRouter(object):
                         _urls += [path(
                             str(cls.get_url_string(_model_api_config['api_url'])) + '<str:{0}>/'.format(
                                 _model_api_config.get('slug_field', 'pk')),
-                            cls.get_viewset_class_view(view_class=_viewset_class, api_config=_model_api_config),
+                            cls.get_viewset_class_view(view_class=_viewset_class,
+                                                       api_config=_model_api_config, get_method="retrieve"),
                             name=str(_model_api_config['api_url']) + '_details'
                         )]
             except (ModuleNotFoundError,):
@@ -63,13 +64,14 @@ class BasicRouter(object):
         return value
 
     @classmethod
-    def get_viewset_class_view(cls, view_class, api_config):
+    def get_viewset_class_view(cls, view_class, api_config, **kwargs):
         # TODO: I'll rewrite this nonsense try;except statement
         try:
             _allowed_methods = api_config.get('allowed_methods', ['get'])
             actions_dict = {}
-            if HTTPVerbsEnum.GET.value in _allowed_methods and HTTPVerbsEnum.PUT.value not in _allowed_methods:
-                actions_dict.update(get='list')
+            # Default get method from parent function
+            get_method = kwargs.get('get_method', 'list')
+            actions_dict.update(get=get_method)
             if HTTPVerbsEnum.POST.value in _allowed_methods and HTTPVerbsEnum.PUT.value not in _allowed_methods:
                 actions_dict.update(post='create')
             if HTTPVerbsEnum.PUT.value in _allowed_methods:
@@ -78,11 +80,6 @@ class BasicRouter(object):
                 actions_dict.update(patch='partial_update')
             if HTTPVerbsEnum.DELETE.value in _allowed_methods:
                 actions_dict.update(delete='delete')
-            if any([
-                HTTPVerbsEnum.PUT.value in _allowed_methods, HTTPVerbsEnum.PATCH.value in _allowed_methods,
-                HTTPVerbsEnum.DELETE.value in _allowed_methods,
-            ]):
-                actions_dict.update(get='retrieve')
 
             return view_class.as_view(actions_dict)
         except Exception:
