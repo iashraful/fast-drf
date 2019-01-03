@@ -1,3 +1,18 @@
+## 1.0.3
+**ADDED**
+* Details API [PUT, PATCH, DELETE]
+* Allowed method choosing option
+* Only view class or only serializer class can override
+* Added support for view class or viewset or generic view
+
+**UPDATED**
+* Nothing
+
+**BUG FIXED**
+* Fixed queryset override issue
+* Fixed queryset caching issue
+
+
 ## 0.1.2
 **ADDED**
 * Nothing
