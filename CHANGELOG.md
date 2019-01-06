@@ -1,3 +1,14 @@
+## 1.0.4
+**ADDED**
+* Nothing
+
+**UPDATED**
+* Nothing
+
+**BUG FIXED**
+* HTTP verb conflicting issue
+* Proper http handling
+
 ## 1.0.3
 **ADDED**
 * Details API [PUT, PATCH, DELETE]
