@@ -1,3 +1,7 @@
+## 1.0.5
+**UPDATED**
+* Django version updated due to stop vulnerability warning
+
 ## 1.0.4
 **ADDED**
 * Nothing
