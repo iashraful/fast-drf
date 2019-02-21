@@ -36,9 +36,18 @@ class TestUser(UserProfile):
         return api_configs
 
 
+class PostMeta(models.Model):
+    meta_info = models.TextField(null=True, blank=True)
+
+    class Meta:
+        app_label = 'example_app'
+
+
 class Post(ExposeApiModelMixin, models.Model):
+    author = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=256, null=True)
     description = models.TextField(null=True)
+    meta = models.ForeignKey(PostMeta, on_delete=models.SET_NULL, null=True, related_name='posts')
 
     class Meta:
         app_label = 'example_app'
@@ -51,7 +60,7 @@ class Post(ExposeApiModelMixin, models.Model):
         api_configs = {
             "api_url": "posts",
             # "viewset_class": PostAPIView,
-            "serializer_class": PostPrivateSerializer,
+            # "serializer_class": PostPrivateSerializer,
             "allowed_methods": [HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value, HTTPVerbsEnum.PUT.value],
             "queryset": cls.objects.filter()
         }
