@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 __author__ = 'Ashraful'
@@ -62,6 +61,12 @@ class APIViewSetGenerator(object):
 
             def update(self, request, *args, **kwargs):
                 return super(RunTimeViewset, self).update(request, *args, **kwargs)
+
+            def partial_update(self, request, pk=None, *args, **kwargs):
+                return super(RunTimeViewset, self).partial_update(request=request, pk=pk, *args, **kwargs)
+
+            def destroy(self, request, pk=None, *args, **kwargs):
+                return super(RunTimeViewset, self).destroy(request=request, pk=pk, *args, **kwargs)
 
             def get_queryset(self, *args, **kwargs):
                 return self.model.objects.filter(pk__in=self.queryset)

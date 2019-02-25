@@ -78,7 +78,7 @@ class BasicRouter(object):
                 if HTTPVerbsEnum.PATCH.value in _allowed_methods:
                     actions_dict.update(patch='partial_update')
                 if HTTPVerbsEnum.DELETE.value in _allowed_methods:
-                    actions_dict.update(delete='delete')
+                    actions_dict.update(delete='destroy')
             else:
                 actions_dict.update(get='list')
                 if HTTPVerbsEnum.POST.value in _allowed_methods:
