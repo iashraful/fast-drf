@@ -19,8 +19,8 @@ class SerializerGenerator(object):
         _this = self
 
         class RuntimeModelSerializer(serializers.ModelSerializer):
-            def __init__(self, instance=None, data={}, **kwargs):
-                if data:
+            def __init__(self, instance=None, data=empty, **kwargs):
+                if data is not empty:
                     data = self.create_relational_data(data=data)
                 super(RuntimeModelSerializer, self).__init__(instance=instance, data=data, **kwargs)
 
