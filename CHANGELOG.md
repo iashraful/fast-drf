@@ -1,3 +1,15 @@
+## 1.0.6
+**UPDATED**
+* Django version updated due to stop vulnerability warning
+
+**ADDED**
+* Create from two level of json according to API format
+
+**BUG FIXED**
+* Fixed permission class empty issue while user is not giving
+* Fixed Serializer list api data property calling issue
+
+
 ## 1.0.5
 **UPDATED**
 * Django version updated due to stop vulnerability warning
