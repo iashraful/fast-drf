@@ -1,4 +1,4 @@
-.vs-code
+.vscode
 .idea
 *.pyc
 __pycache__/

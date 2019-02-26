@@ -36,7 +36,7 @@ class APIViewSetGenerator(object):
         """
 
         class RunTimeViewset(viewsets.ModelViewSet):
-            if not self.permission_classes:
+            if self.permission_classes:
                 permission_classes = self.permission_classes
             serializer_class = self.serializer_class
             queryset = self.queryset
