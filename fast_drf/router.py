@@ -38,7 +38,8 @@ class BasicRouter(object):
                     api_versions = model.api_version_fields() if hasattr(model, 'api_version_fields') else {}
                     if len(api_versions.keys()) > 0:
                         for version in api_versions.keys():
-                            _viewset_class = expose_api_object.get_runtime_viewset(api_version=version, **_model_api_config)
+                            _viewset_class = expose_api_object.get_runtime_viewset(api_version=version,
+                                                                                   **_model_api_config)
                             _urls += [
                                 path(
                                     str(cls.get_url_string(value=_model_api_config['api_url'], version=version)),
@@ -60,13 +61,28 @@ class BasicRouter(object):
                         HTTPVerbsEnum.PATCH.value in _model_api_config.get('allowed_methods', []),
                         HTTPVerbsEnum.DELETE.value in _model_api_config.get('allowed_methods', []),
                     ]):
-                        _urls += [path(
-                            str(cls.get_url_string(_model_api_config['api_url'])) + '<str:{0}>/'.format(
-                                _model_api_config.get('slug_field', 'pk')),
-                            cls.get_viewset_class_view(view_class=_viewset_class,
-                                                       api_config=_model_api_config, details=True),
-                            name=str(_model_api_config['api_url']) + '_details'
-                        )]
+                        if len(api_versions.keys()) > 0:
+                            for version in api_versions.keys():
+                                _viewset_class = expose_api_object.get_runtime_viewset(api_version=version,
+                                                                                       **_model_api_config)
+                                _urls += [path(
+                                    str(cls.get_url_string(_model_api_config['api_url'],
+                                                           version=version)) + '<str:{0}>/'.format(
+                                        _model_api_config.get('slug_field', 'pk')),
+                                    cls.get_viewset_class_view(view_class=_viewset_class,
+                                                               api_config=_model_api_config, details=True),
+                                    name=str(_model_api_config['api_url']) + '_details'
+                                )]
+                        else:
+                            _viewset_class = expose_api_object.get_runtime_viewset(**_model_api_config)
+                            _urls += [path(
+                                str(cls.get_url_string(_model_api_config['api_url'],
+                                                       version='v1')) + '<str:{0}>/'.format(
+                                    _model_api_config.get('slug_field', 'pk')),
+                                cls.get_viewset_class_view(view_class=_viewset_class,
+                                                           api_config=_model_api_config, details=True),
+                                name=str(_model_api_config['api_url']) + '_details'
+                            )]
             except (ModuleNotFoundError,):
                 continue
         return _urls

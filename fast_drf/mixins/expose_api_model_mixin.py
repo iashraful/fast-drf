@@ -40,8 +40,5 @@ class ExposeApiModelMixin(object):
         :param kwargs: Currently nothing to receive on kwargs
         :return: a dictionary object with version number
         """
-        versions = {
-            'v1': ['id'],
-            'v2': ['pk']
-        }
+        versions = {}
         return versions
