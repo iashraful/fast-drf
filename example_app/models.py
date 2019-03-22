@@ -65,3 +65,20 @@ class Post(ExposeApiModelMixin, models.Model):
             "queryset": cls.objects.filter()
         }
         return api_configs
+
+    @classmethod
+    def api_version_fields(cls, **kwargs):
+        """
+        *** DEFAULT VERSION `v1` ***
+
+        This method will return a dictionary object with version number and fields name. Fields are similar like
+        serializer fields. Or you can say exactly as same as serializer fields.
+        :param kwargs: Currently nothing to receive on kwargs
+        :return: a dictionary object with version number
+        """
+        versions = {
+            'v1': ['id', 'author', 'title', 'description'],
+            'v2': ['pk', 'author', 'title', 'description', 'meta']
+        }
+        return versions
+
