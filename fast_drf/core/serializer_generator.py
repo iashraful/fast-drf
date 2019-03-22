@@ -9,24 +9,32 @@ class SerializerGenerator(object):
     def __init__(self, *args, **kwargs):
         self.model = kwargs.get('model')
 
-    def make_runtime_serializer(self, **func_kwargs):
+    def make_runtime_serializer(self, api_version=None, **func_kwargs):
         """
         A generic serializer maker once at a time
         :param func_kwargs: all the extra params are accepted and pass to child
+        :param api_version: API version string or number
         :return: return serializer class
         """
         # Define a protected _this to access outer scope
         _this = self
+        api_version_fields = self.model.api_version_fields() if hasattr(self.model, 'api_version_fields') else {}
+        current_version_fields = api_version_fields.get(api_version, '__all__')
 
         class RuntimeModelSerializer(serializers.ModelSerializer):
             def __init__(self, instance=None, data=empty, **kwargs):
                 if data is not empty:
                     data = self.create_relational_data(data=data)
+                self.api_version = api_version
                 super(RuntimeModelSerializer, self).__init__(instance=instance, data=data, **kwargs)
+
+            @classmethod
+            def get_api_version(cls):
+                return api_version
 
             class Meta:
                 model = self.model
-                fields = '__all__'
+                fields = current_version_fields
 
             def create(self, attrs):
                 with transaction.atomic():
