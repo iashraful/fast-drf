@@ -46,4 +46,24 @@ class MyModel(ExposeApiModelMixin, models.Model):
 
 ```
 
+#### Enable multiple API version
+To achieve this awesomeness rewrite the following method in your model
+```python
+@classmethod
+def api_version_fields(cls, **kwargs):
+    """
+    *** DEFAULT VERSION `v1` ***
+
+    This method will return a dictionary object with version number and fields name. Fields are similar like
+    serializer fields. Or you can say exactly as same as serializer fields.
+    :param kwargs: Currently nothing to receive on kwargs
+    :return: a dictionary object with version number
+    """
+    versions = {
+        'v1': ['id', 'name', 'custom_1', 'custom_2'],
+        'v2': ['id', 'name', 'something_else']
+    }
+    return versions
+```
+
 **That's it.** You can also override serializer class and viewset class
