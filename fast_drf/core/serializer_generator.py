@@ -1,5 +1,7 @@
+from typing import Any
+
 from django.db import transaction
-from django.db.models import OneToOneField, ForeignKey
+from django.db.models import OneToOneField, ForeignKey, Model
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import empty
@@ -36,9 +38,15 @@ class SerializerGenerator(object):
                 model = self.model
                 fields = current_version_fields
 
-            def create(self, attrs):
+            def create(self, validated_data: Any):
                 with transaction.atomic():
-                    instance = super(RuntimeModelSerializer, self).create(validated_data=attrs)
+                    instance = super(RuntimeModelSerializer, self).create(validated_data=validated_data)
+                    return instance
+
+            def update(self, instance: Model, validated_data: Any):
+                with transaction.atomic():
+                    instance = super(RuntimeModelSerializer, self).update(
+                        instance=instance, validated_data=validated_data)
                     return instance
 
             def create_relational_data(self, data, **kwargs):
@@ -53,7 +61,7 @@ class SerializerGenerator(object):
                         except TypeError:
                             raise ValidationError({'message': '{0} contains invalid data.'.format(field.name)})
                         data[field.name] = related_instance.pk
-                    elif type(data[field.name]) != int:
+                    elif type(eval(data[field.name])) != int:
                         data.pop(field.name)
                 return data
 
