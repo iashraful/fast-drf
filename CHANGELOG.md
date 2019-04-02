@@ -1,3 +1,11 @@
+## 1.0.8
+**ADDED**
+* API Multiple Version
+
+## 1.0.7
+**BUG FIXED**
+* Fixed paginated queryset returning issue
+
 ## 1.0.6
 **UPDATED**
 * Django version updated due to stop vulnerability warning
