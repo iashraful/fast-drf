@@ -58,11 +58,10 @@ class SerializerGenerator(object):
                         _model = field.related_model
                         try:
                             related_instance = _model.objects.create(**data[field.name])
+                            data.pop(field.name)
                         except TypeError:
                             raise ValidationError({'message': '{0} contains invalid data.'.format(field.name)})
                         data[field.name] = related_instance.pk
-                    elif type(eval(data[field.name])) != int:
-                        data.pop(field.name)
                 return data
 
         return RuntimeModelSerializer
