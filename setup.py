@@ -9,12 +9,13 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='fast-drf',
-    version='1.0.8',
+    version='1.0.9',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',
     description='A simple model based API configurator written in Python and based of Django and Django REST Framework',
     long_description=README,
+    long_description_content_type="text/markdown",
     url='https://ashraful.dev',
     author='Ashraful Islam',
     author_email='ashrafulrobin3@gmail.com',
