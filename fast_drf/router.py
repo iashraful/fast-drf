@@ -92,7 +92,8 @@ class BasicRouter(object):
         if settings.APPEND_SLASH:
             value = "{0}/".format(value)
         if version:
-            value = "{version}/{value}".format(version=version, value=value)
+            value = "{prefix}/{version}/{value}".format(
+                prefix=getattr(settings, 'API_PREFIX', 'api'), version=version, value=value)
         return value
 
     @classmethod

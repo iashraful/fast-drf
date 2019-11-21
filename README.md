@@ -66,4 +66,14 @@ def api_version_fields(cls, **kwargs):
     return versions
 ```
 
+
+#### Append a slash at the end of of API
+Set `APPEND_SLASH = True` at your settings.py
+
+#### API Prefix Change
+Set you API prefix as your own like following.  
+`API_PREFIX = 'rest-api'` Default  **api**  
+Your API will look like, `/rest-api/v1/users/`
+
+
 **That's it.** You can also override serializer class and viewset class
