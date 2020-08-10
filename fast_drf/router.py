@@ -7,6 +7,7 @@ from django.urls import path
 from fast_drf.core.api_generator import APIGenerator
 from fast_drf.utils import predicate
 from fast_drf.utils.enums import HTTPVerbsEnum
+from fast_drf.utils.parser import get_config
 
 
 class BasicRouter(object):
@@ -22,8 +23,8 @@ class BasicRouter(object):
         :return: a tuple of list [(model_name, model), (model_name, model)]
         """
         _urls = []
-        apps = getattr(settings, 'FAST_API_ENABLED_APPS') if hasattr(
-            settings, 'FAST_API_ENABLED_APPS') else settings.INSTALLED_APPS
+        _config = get_config()
+        apps = _config.get('DEFAULT_APPLIED_APPS', [])
         for app in apps:
             try:
                 _model_tuple = inspect.getmembers(import_module("{0}.{1}".format(app, 'models')), predicate.is_model)
@@ -89,11 +90,12 @@ class BasicRouter(object):
 
     @classmethod
     def get_url_string(cls, value, version=None):
+        _config = get_config()
         if settings.APPEND_SLASH:
             value = "{0}/".format(value)
         if version:
             value = "{prefix}/{version}/{value}".format(
-                prefix=getattr(settings, 'API_PREFIX', 'api'), version=version, value=value)
+                prefix=_config.get('DEFAULT_API_PREFIX', 'api'), version=version, value=value)
         return value
 
     @classmethod
