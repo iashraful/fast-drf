@@ -99,6 +99,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Fast DRF Settings
-FAST_API_ENABLED_APPS = [
-    'example_app'
-]
+FAST_DRF_CONFIG = {
+    'DEFAULT_APPLIED_APPS': (
+        'example_app',
+    )
+}
