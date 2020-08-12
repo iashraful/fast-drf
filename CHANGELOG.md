@@ -1,3 +1,21 @@
+## 2.0.0
+**ADDED**
+* Dynamic API filtering with model fields.
+* Support all the django filter on API params. Like: ?search=1&title:icontains=test
+
+**UPDATED**
+* Settings config data type updated with default configuration
+
+## 1.0.10
+**ADDED**
+* Added Dockerfile and compose file for local dependency
+
+**BUG FIXED**
+* Django REST Framework six dependent version upgraded
+
+**UPDATED**
+* Updated API prefix and doc
+
 ## 1.0.8
 **ADDED**
 * API Multiple Version

@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+#  db:
+#    image: postgres:12.2-alpine
+#    restart: always
+#    container_name: fast_drf_db
+#    ports:
+#      - '5434:5432'
+#    volumes:
+#      - ./db:/var/lib/postgresql/data/
+  server:
+    build: ./
+    restart: always
+    container_name: fast_drf_api
+    command: sh -c "python /app/server/manage.py migrate && python /app/server/manage.py runserver 0.0.0.0:8081"
+    working_dir: /app/server
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/app/server:cached
+    ports:
+      - '8081:8081'
+#    depends_on:
+#      - db

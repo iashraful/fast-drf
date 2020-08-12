@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='fast-drf',
-    version='1.0.9',
+    version='2.0.0',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',
@@ -37,6 +37,6 @@ setup(
     ],
     install_requires=[
         'django>=2.0',
-        'djangorestframework>=3.6',
+        'djangorestframework>=3.10',
     ]
 )

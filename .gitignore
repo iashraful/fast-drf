@@ -1,4 +1,5 @@
 .vscode
+.devcontainer
 .idea
 *.pyc
 __pycache__/
