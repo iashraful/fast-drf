@@ -46,21 +46,20 @@ class APIViewSetGenerator(object):
             lookup_field = self.lookup_field
 
             def get_queryset(self, *args, **kwargs):
-                base_queryset = self.model.objects.filter(pk__in=self.queryset)
+                # Here it's performing sub query in SQL. So, no performance loss. Just executing a big query
+                # not more than 1 query
+                return self.model.objects.filter(pk__in=self.queryset)
+
+            def list(self, request, **kwargs):
+                base_queryset = self.get_queryset(request=request, **kwargs)
                 request = kwargs.get('request', self.request)
                 try:
                     search_enabled = bool(eval(request.GET.get('search', '0')))
                     if search_enabled:
                         _filters = APIFilteredMixin.get_filters(model=self.model, request=request)
-                        return base_queryset.filter(_filters)
+                        self.queryset = base_queryset.filter(_filters)
                 except Exception as err:
-                    return base_queryset
-                return base_queryset
-
-            def list(self, request, **kwargs):
-                # Here it's performing sub query in SQL. So, no performance loss. Just executing a big query
-                # not more than 1 query
-                self.queryset = self.get_queryset(request=request, **kwargs)
+                    self.queryset = base_queryset
                 return super(RunTimeViewset, self).list(request=request, **kwargs)
 
             def create(self, request, *args, **kwargs):
