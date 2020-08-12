@@ -5,7 +5,14 @@ It's easy and configurable.
 
 ### Quick Start
 * Install the library inside your  virtualenv by using pip `pip install fast-drf`
-* Add your apps to `FAST_API_ENABLED_APPS` on settings for best performance. Like, `FAST_API_ENABLED_APPS=['app_name', 'my_app']`
+* Add config for Fast DRF like following,
+```python
+FAST_DRF_CONFIG = {
+    'DEFAULT_APPLIED_APPS': (
+        'example_app', 'another_app'
+    )
+}
+```
 * Update your every model or if you use base abstract model then it's good and less time you need. Update model like following,
 ```python
 from fast_drf.mixins.expose_api_model_mixin import ExposeApiModelMixin
@@ -72,7 +79,13 @@ Set `APPEND_SLASH = True` at your settings.py
 
 #### API Prefix Change
 Set you API prefix as your own like following.  
-`API_PREFIX = 'rest-api'` Default  **api**  
+```python
+FAST_DRF_CONFIG = {
+    # ...
+    'DEFAULT_API_PREFIX': 'rest-api'  # Default 'api'
+    # ...
+}
+```
 Your API will look like, `/rest-api/v1/users/`
 
 

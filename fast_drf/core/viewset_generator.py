@@ -3,6 +3,8 @@ from rest_framework.response import Response
 
 __author__ = 'Ashraful'
 
+from fast_drf.mixins.api_filtered_mixin import APIFilteredMixin
+
 
 class APIViewSetGenerator(object):
     permission_classes = None
@@ -43,10 +45,21 @@ class APIViewSetGenerator(object):
             model = self.model
             lookup_field = self.lookup_field
 
-            def list(self, request, **kwargs):
+            def get_queryset(self, *args, **kwargs):
                 # Here it's performing sub query in SQL. So, no performance loss. Just executing a big query
                 # not more than 1 query
-                self.queryset = self.model.objects.filter(pk__in=self.queryset)
+                return self.model.objects.filter(pk__in=self.queryset)
+
+            def list(self, request, **kwargs):
+                base_queryset = self.get_queryset(request=request, **kwargs)
+                request = kwargs.get('request', self.request)
+                try:
+                    search_enabled = bool(eval(request.GET.get('search', '0')))
+                    if search_enabled:
+                        _filters = APIFilteredMixin.get_filters(model=self.model, request=request)
+                        self.queryset = base_queryset.filter(_filters)
+                except Exception as err:
+                    self.queryset = base_queryset
                 return super(RunTimeViewset, self).list(request=request, **kwargs)
 
             def create(self, request, *args, **kwargs):
@@ -67,8 +80,5 @@ class APIViewSetGenerator(object):
 
             def destroy(self, request, pk=None, *args, **kwargs):
                 return super(RunTimeViewset, self).destroy(request=request, pk=pk, *args, **kwargs)
-
-            def get_queryset(self, *args, **kwargs):
-                return self.model.objects.filter(pk__in=self.queryset)
 
         return RunTimeViewset
