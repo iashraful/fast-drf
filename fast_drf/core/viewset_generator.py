@@ -1,9 +1,10 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 
+from fast_drf.utils.parser import parse_filters
+
 __author__ = 'Ashraful'
 
-from fast_drf.mixins.api_filtered_mixin import APIFilteredMixin
 
 
 class APIViewSetGenerator(object):
@@ -56,7 +57,7 @@ class APIViewSetGenerator(object):
                 try:
                     search_enabled = bool(eval(request.GET.get('search', '0')))
                     if search_enabled:
-                        _filters = APIFilteredMixin.get_filters(model=self.model, request=request)
+                        _filters = parse_filters(model=self.model, request=request)
                         self.queryset = base_queryset.filter(_filters)
                 except Exception as err:
                     self.queryset = base_queryset

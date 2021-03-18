@@ -8,5 +8,5 @@ db.*
 
 *.egg*
 dist
-
+.env
 venv
