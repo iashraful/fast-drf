@@ -1,3 +1,7 @@
+## 2.1.0
+**ADDED**
+* Added support for Django's prefetch and select related.
+
 ## 2.0.0
 **ADDED**
 * Dynamic API filtering with model fields.
