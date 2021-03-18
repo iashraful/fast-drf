@@ -4,10 +4,10 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 't#wa%bkth!3%*!yyo1=q3+3s2%@qpe9%0z!7p4o66-y(t+_)=p'
+SECRET_KEY = os.environ.get('SECRECT_KEY', 'TEST KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', '1')))
 
 ALLOWED_HOSTS = []
 
@@ -54,8 +54,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.environ.get('DB_NAME', 'fast_drf'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': int(os.environ.get('DB_PORT', 5432)),
     }
 }
 

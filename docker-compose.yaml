@@ -15,9 +15,8 @@ services:
     container_name: fast_drf_api
     command: sh -c "python /app/server/manage.py migrate && python /app/server/manage.py runserver 0.0.0.0:8081"
     working_dir: /app/server
-    environment:
-      - PYTHONDONTWRITEBYTECODE=1
-      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
     volumes:
       - ./:/app/server:cached
     ports:
