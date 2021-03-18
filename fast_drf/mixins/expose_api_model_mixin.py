@@ -42,3 +42,26 @@ class ExposeApiModelMixin(object):
         """
         versions = {}
         return versions
+
+    @classmethod
+    def api_prefetch_related_fields(cls):
+        """
+        Prefetch related is used for prefeching the objects for Django Queryset. It saves a lot time
+        of table joining and multiple queries. 
+        Read more: https://docs.djangoproject.com/en/3.1/ref/models/querysets/#prefetch-related
+
+        Return a lists of field name those will be directly using on the queryset.
+        """
+        return []
+
+    @classmethod
+    def api_select_related_fields(cls):
+
+        """
+        Select related is used for prefeching the objects for Django Queryset. It saves a lot time
+        of table joining and multiple queries. 
+        Read more: https://docs.djangoproject.com/en/3.1/ref/models/querysets/#select-related
+
+        Return a lists of field name those will be directly using on the queryset.
+        """
+        return []

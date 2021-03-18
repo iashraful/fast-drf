@@ -43,6 +43,16 @@ class PostMeta(models.Model):
         app_label = 'example_app'
 
 
+    @classmethod
+    def api_prefetch_related_fields(cls):
+        return ['posts']
+
+    @classmethod
+    def api_select_related_fields(cls):
+        return []
+
+
+
 class Post(ExposeApiModelMixin, models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=256, null=True)
@@ -81,4 +91,12 @@ class Post(ExposeApiModelMixin, models.Model):
             'v2': ['pk', 'author', 'title', 'description', 'meta']
         }
         return versions
+
+    @classmethod
+    def api_prefetch_related_fields(cls):
+        return []
+
+    @classmethod
+    def api_select_related_fields(cls):
+        return ['meta', 'author']
 
