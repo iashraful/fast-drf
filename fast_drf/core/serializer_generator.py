@@ -66,7 +66,7 @@ class SerializerGenerator(object):
 
         return RuntimeModelSerializer
 
-    def get_relational_fields(self, *kwargs):
+    def get_relational_fields(self, **kwargs):
         _relational_fields = [OneToOneField, ForeignKey]
         _fields = [f for f in self.model._meta.get_fields() if f.__class__ in _relational_fields]
         return _fields
