@@ -4,6 +4,7 @@
 *.pyc
 __pycache__/
 db.*
+postgres_data/*
 *.sqlite3
 
 *.egg*
