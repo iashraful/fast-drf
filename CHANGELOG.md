@@ -1,3 +1,11 @@
+## 2.1.1
+**ADDED**
+* Added test cases for test app
+* App directory structure has changed. But, no external effect.
+
+**BUG FIXED**
+* Import error and some other minor fixes
+
 ## 2.1.0
 **ADDED**
 * Added support for Django's prefetch and select related.
