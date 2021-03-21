@@ -1,5 +1,3 @@
-# Fast DRF (Fast Django REST Framework)
-
 ## Why Fast DRF?
 Fast DRF(Django REST Framework) is for making REST API development quicker/faster with awesomeness of Django. It will help you to write less code and develop API fastest as you can. Also you can override everthing(queryset, view class, serializer, etc) you want.
 
