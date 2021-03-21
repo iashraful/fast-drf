@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 def get_default_config():
     """
     Here will be landed all the default config.

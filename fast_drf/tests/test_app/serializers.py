@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from example_app.models import Post
+from fast_drf.tests.test_app.models import Post
 
 
 class PostPrivateSerializer(ModelSerializer):

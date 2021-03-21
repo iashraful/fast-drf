@@ -13,7 +13,7 @@ class UserProfile(ExposeApiModelMixin, models.Model):
     dob = models.DateField(null=True)
 
     class Meta:
-        app_label = 'example_app'
+        app_label = 'test_app'
 
     @classmethod
     def exposed_api(cls, *args, **kwargs):
@@ -26,7 +26,7 @@ class UserProfile(ExposeApiModelMixin, models.Model):
 class TestUser(UserProfile):
     class Meta:
         proxy = True
-        app_label = 'example_app'
+        app_label = 'test_app'
 
     @classmethod
     def exposed_api(cls, *args, **kwargs):
@@ -40,7 +40,7 @@ class PostMeta(models.Model):
     meta_info = models.TextField(null=True, blank=True)
 
     class Meta:
-        app_label = 'example_app'
+        app_label = 'test_app'
 
 
     @classmethod
@@ -60,7 +60,7 @@ class Post(ExposeApiModelMixin, models.Model):
     meta = models.ForeignKey(PostMeta, on_delete=models.SET_NULL, null=True, related_name='posts')
 
     class Meta:
-        app_label = 'example_app'
+        app_label = 'test_app'
 
     @classmethod
     def exposed_api(cls, *args, **kwargs):
