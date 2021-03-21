@@ -1,5 +1,5 @@
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('example_app.urls'))
+    path('', include('fast_drf.tests.test_app.urls'))
 ]

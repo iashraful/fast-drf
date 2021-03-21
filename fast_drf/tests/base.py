@@ -1,9 +1,10 @@
 from django.test import TestCase
-from example_app.models import Post
+from .test_app.models import Post
 from fast_drf.utils.enums import HTTPVerbsEnum
 
 
 class FastDRFTestCase(TestCase):
+
     def setUp(self):
         self.model = Post
         api_config = {

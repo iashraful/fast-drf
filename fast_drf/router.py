@@ -84,7 +84,7 @@ class BasicRouter(object):
                                                            api_config=_model_api_config, details=True),
                                 name=str(_model_api_config['api_url']) + '_details'
                             )]
-            except (ModuleNotFoundError,):
+            except (ModuleNotFoundError,) as error:
                 continue
         return _urls
 
