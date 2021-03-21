@@ -6,7 +6,7 @@ It has a plain and simple architecture. It brings your configuration and create 
 
 **Procedure of execution**  
 * Locate the enabled apps from settings. If not read all the apps from installed apps.(I always recommend to keep **ENABLED_APPS** in settings)  
-* Read configurastion from each model.  
+* Read configuration from each model.  
 * Create a runtime serializer and runtime view.  
 * Read REST framework configuration from settings.py and put them in viewset class. For example, You may have Custom Pagination class, Default Permission class like **IsAuthenticated** etc...  
 * Bind into urls. It's has a own router and the router return urlpatterns in a list.  
