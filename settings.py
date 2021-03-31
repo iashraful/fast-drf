@@ -1,4 +1,4 @@
-import os
+import os, sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,8 +20,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'example_app',
+    'fast_drf.tests.test_app'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -105,6 +106,6 @@ STATIC_URL = '/static/'
 # Fast DRF Settings
 FAST_DRF_CONFIG = {
     'DEFAULT_APPLIED_APPS': (
-        'example_app',
+        'fast_drf.tests.test_app',
     )
 }
