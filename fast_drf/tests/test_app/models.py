@@ -11,6 +11,7 @@ class UserProfile(ExposeApiModelMixin, models.Model):
     phone = models.CharField(max_length=32)
     address = models.TextField(verbose_name='Address')
     dob = models.DateField(null=True)
+    photo = models.ImageField(upload_to='profile_photo', null=True)
 
     class Meta:
         app_label = 'test_app'
@@ -58,6 +59,7 @@ class Post(ExposeApiModelMixin, models.Model):
     title = models.CharField(max_length=256, null=True)
     description = models.TextField(null=True)
     meta = models.ForeignKey(PostMeta, on_delete=models.SET_NULL, null=True, related_name='posts')
+    photo = models.ImageField(upload_to='post_photos/', null=True)
 
     class Meta:
         app_label = 'test_app'
@@ -88,7 +90,7 @@ class Post(ExposeApiModelMixin, models.Model):
         """
         versions = {
             'v1': ['id', 'author', 'title', 'description'],
-            'v2': ['pk', 'author', 'title', 'description', 'meta']
+            'v2': ['pk', 'author', 'title', 'description', 'meta', 'photo']
         }
         return versions
 

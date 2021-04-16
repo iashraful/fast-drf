@@ -11,3 +11,6 @@ postgres_data/*
 dist
 .env
 venv
+
+static_root/
+media/
