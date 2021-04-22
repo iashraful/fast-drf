@@ -1,4 +1,8 @@
-## 2.1.1
+## 2.1.3
+**FIXED**
+* Fixed double querying for list API
+
+## 2.1.2
 **ADDED**
 * get_api_queryset class method on the model mixin. So, be available on the models 
 * Deprecated "queryset" on exposed_api class method.

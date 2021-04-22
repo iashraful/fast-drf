@@ -55,7 +55,13 @@ class APIViewSetGenerator(object):
                         self.queryset = base_queryset.filter(_filters)
                 except Exception as err:
                     self.queryset = base_queryset
-                return super(RunTimeViewset, self).list(request=request, **kwargs)
+                page = self.paginate_queryset(base_queryset)
+                if page is not None:
+                    serializer = self.get_serializer(page, many=True)
+                    return self.get_paginated_response(serializer.data)
+
+                serializer = self.get_serializer(base_queryset, many=True)
+                return Response(serializer.data)
 
             def create(self, request, *args, **kwargs):
                 serializer = self.serializer_class(data=request.data)
