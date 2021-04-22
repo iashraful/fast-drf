@@ -17,7 +17,8 @@ class ExposeApiModelMixin(object):
 
             # slug_field is application 'put', 'patch', 'delete' these methods
             "slug_field": "pk", # (NOT REQUIRED) DEFAULT [PK] (Must be model field, unique or primary key)
-
+            # This "queryset" is deprecated. Will be removed in future versions. Instead on this use the model's
+            # get_api_queryset method
             "queryset": "",  # (NOT REQUIRED) default all
             "viewset_class": "",  # (NOT REQUIRED) BaseViewset class
             "serializer_class": "",  # (NOT REQUIRED) default BaseEntitySerializer
@@ -47,7 +48,7 @@ class ExposeApiModelMixin(object):
     def api_prefetch_related_fields(cls):
         """
         Prefetch related is used for prefeching the objects for Django Queryset. It saves a lot time
-        of table joining and multiple queries. 
+        of table joining and multiple queries.
         Read more: https://docs.djangoproject.com/en/3.1/ref/models/querysets/#prefetch-related
 
         Return a lists of field name those will be directly using on the queryset.
@@ -59,9 +60,16 @@ class ExposeApiModelMixin(object):
 
         """
         Select related is used for prefeching the objects for Django Queryset. It saves a lot time
-        of table joining and multiple queries. 
+        of table joining and multiple queries.
         Read more: https://docs.djangoproject.com/en/3.1/ref/models/querysets/#select-related
 
         Return a lists of field name those will be directly using on the queryset.
         """
         return []
+
+    @classmethod
+    def get_api_queryset(cls, *args, **kwargs):
+        """
+        This method will be used for overriding the queryset for API.
+        """
+        return cls.objects.all()

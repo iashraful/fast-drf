@@ -43,7 +43,6 @@ class PostMeta(models.Model):
     class Meta:
         app_label = 'test_app'
 
-
     @classmethod
     def api_prefetch_related_fields(cls):
         return ['posts']
@@ -51,7 +50,6 @@ class PostMeta(models.Model):
     @classmethod
     def api_select_related_fields(cls):
         return []
-
 
 
 class Post(ExposeApiModelMixin, models.Model):
@@ -74,9 +72,12 @@ class Post(ExposeApiModelMixin, models.Model):
             # "viewset_class": PostAPIView,
             # "serializer_class": PostPrivateSerializer,
             "allowed_methods": [HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value, HTTPVerbsEnum.PUT.value],
-            "queryset": cls.objects.filter()
         }
         return api_configs
+
+    @classmethod
+    def get_api_queryset(cls, *args, **kwargs):
+        return cls.objects.all()
 
     @classmethod
     def api_version_fields(cls, **kwargs):
@@ -101,4 +102,3 @@ class Post(ExposeApiModelMixin, models.Model):
     @classmethod
     def api_select_related_fields(cls):
         return ['meta', 'author']
-
