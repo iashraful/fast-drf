@@ -102,6 +102,11 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static_root'
+MEDIA_URL = '/media/'
+EXPORTED_FILES_DIR = 'exported_files'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+EXPORTED_FILES = os.path.join(MEDIA_ROOT, EXPORTED_FILES_DIR)
 
 # Fast DRF Settings
 FAST_DRF_CONFIG = {

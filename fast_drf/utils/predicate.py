@@ -4,6 +4,7 @@ __author__ = 'Ashraful'
 
 
 def is_model(value=None):
+    from django.db import models
     """
     Check a python object is a model or not. Got idea from inspect
     :param value: an object. may be function, class or anything
@@ -11,11 +12,4 @@ def is_model(value=None):
     """
     if value is None:
         return False
-    if inspect.isclass(value):
-        try:
-            _obj = value()
-            if hasattr(_obj, 'pk'):
-                return True
-        except Exception:
-            return False
-    return False
+    return inspect.isclass(value) and issubclass(value, models.Model)

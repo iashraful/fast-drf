@@ -19,17 +19,7 @@ class APIViewSetGenerator(object):
         self.serializer_class = main_kwargs.get('serializer_class', None)
         self.viewset_class = main_kwargs.get('viewset_class')
         self.permission_classes = main_kwargs.get('permission_classes', [])
-        self.queryset = main_kwargs.get('queryset', self.get_queryset(**main_kwargs))
         self.lookup_field = main_kwargs.get('slug_field', 'pk')
-
-    def get_queryset(self, *args, **kwargs):
-        """
-        Queryset maker for model
-        :param args:
-        :param kwargs:
-        :return: a queryset
-        """
-        return self.model.objects.all()
 
     def make_runtime_viewset(self, **kwargs):
         """
@@ -42,16 +32,13 @@ class APIViewSetGenerator(object):
             if self.permission_classes:
                 permission_classes = self.permission_classes
             serializer_class = self.serializer_class
-            queryset = self.queryset
             model = self.model
             lookup_field = self.lookup_field
 
             def get_queryset(self, *args, **kwargs):
-                # Here it's performing sub query in SQL. So, no performance loss. Just executing a big query
-                # not more than 1 query
                 _prefetch_related_fields = self.model.api_prefetch_related_fields()
                 _select_related_fields = self.model.api_select_related_fields()
-                queryset = self.model.objects.filter(pk__in=self.queryset)
+                queryset = self.model.get_api_queryset(*args, **kwargs)
                 if len(_prefetch_related_fields) > 0:
                     queryset = queryset.prefetch_related(*_prefetch_related_fields)
                 if len(_select_related_fields) > 0:

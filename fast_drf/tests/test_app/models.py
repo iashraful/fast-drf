@@ -11,6 +11,7 @@ class UserProfile(ExposeApiModelMixin, models.Model):
     phone = models.CharField(max_length=32)
     address = models.TextField(verbose_name='Address')
     dob = models.DateField(null=True)
+    photo = models.ImageField(upload_to='profile_photo', null=True)
 
     class Meta:
         app_label = 'test_app'
@@ -42,7 +43,6 @@ class PostMeta(models.Model):
     class Meta:
         app_label = 'test_app'
 
-
     @classmethod
     def api_prefetch_related_fields(cls):
         return ['posts']
@@ -52,12 +52,12 @@ class PostMeta(models.Model):
         return []
 
 
-
 class Post(ExposeApiModelMixin, models.Model):
     author = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=256, null=True)
     description = models.TextField(null=True)
     meta = models.ForeignKey(PostMeta, on_delete=models.SET_NULL, null=True, related_name='posts')
+    photo = models.ImageField(upload_to='post_photos/', null=True)
 
     class Meta:
         app_label = 'test_app'
@@ -72,9 +72,12 @@ class Post(ExposeApiModelMixin, models.Model):
             # "viewset_class": PostAPIView,
             # "serializer_class": PostPrivateSerializer,
             "allowed_methods": [HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value, HTTPVerbsEnum.PUT.value],
-            "queryset": cls.objects.filter()
         }
         return api_configs
+
+    @classmethod
+    def get_api_queryset(cls, *args, **kwargs):
+        return cls.objects.all()
 
     @classmethod
     def api_version_fields(cls, **kwargs):
@@ -88,7 +91,7 @@ class Post(ExposeApiModelMixin, models.Model):
         """
         versions = {
             'v1': ['id', 'author', 'title', 'description'],
-            'v2': ['pk', 'author', 'title', 'description', 'meta']
+            'v2': ['pk', 'author', 'title', 'description', 'meta', 'photo']
         }
         return versions
 
@@ -99,4 +102,3 @@ class Post(ExposeApiModelMixin, models.Model):
     @classmethod
     def api_select_related_fields(cls):
         return ['meta', 'author']
-

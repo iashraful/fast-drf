@@ -100,7 +100,6 @@ class BasicRouter(object):
 
     @classmethod
     def get_viewset_class_view(cls, view_class, api_config, **kwargs):
-        # TODO: I'll rewrite this nonsense try;except statement
         try:
             _allowed_methods = api_config.get('allowed_methods', ['get'])
             actions_dict = {}

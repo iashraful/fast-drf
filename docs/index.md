@@ -98,7 +98,8 @@ class MyModel(ExposeApiModelMixin, models.Model):
 
             # slug_field is application 'put', 'patch', 'delete' these methods
             "slug_field": "pk", # (NOT REQUIRED) DEFAULT [PK] (Must be model field, unique or primary key)
-
+            # This "queryset" is deprecated. Will be removed in future versions. Instead on this use the model's
+            # get_api_queryset method
             "queryset": "",  # (NOT REQUIRED) default all
             "viewset_class": "",  # (NOT REQUIRED) BaseViewset class
             "serializer_class": "",  # (NOT REQUIRED) default BaseEntitySerializer
@@ -148,3 +149,17 @@ class MyModel(ExposeApiModelMixin, models.Model):
         return ['field_1', 'field_2']
 ```
 So, Where you have enabled the API and you have some relational fields you just need to declare them on the list to optimize the database joining.
+
+
+## Override queryset for API
+The previous implementation was "queryset" on exposed_api method. But, it has some drawbacks. So, we are moving to
+`get_api_queryset` method. The implementation is simple. Let's dig into this.
+```python
+@classmethod
+def get_api_queryset(cls, request):
+    """
+    This method will be used for overriding the queryset for API.
+    You can use the request here.
+    """
+    return cls.objects.filter(your_filter='data')
+```
