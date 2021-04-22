@@ -18,13 +18,8 @@ class ViewsetGeneratorTestCase(FastDRFTestCase):
         }
         self.viewset_generator = APIViewSetGenerator(**_kwargs)
 
-    def test_get_queryset(self):
-        _queryset = self.viewset_generator.get_queryset()
-        self.assertIsInstance(_queryset, QuerySet)
-
     def test_generate_viewset_class(self):
         _viewset_class = self.viewset_generator.make_runtime_viewset()
         self.assertTrue(issubclass(_viewset_class, ModelViewSet))
         self.assertEqual(_viewset_class.serializer_class, self.serializer_class)
-        self.assertIsInstance(_viewset_class.queryset, QuerySet)
         self.assertEqual(_viewset_class.lookup_field, 'title')
