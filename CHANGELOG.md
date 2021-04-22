@@ -1,5 +1,10 @@
 ## 2.1.1
 **ADDED**
+* get_api_queryset class method on the model mixin. So, be available on the models 
+* Deprecated "queryset" on exposed_api class method.
+
+## 2.1.1
+**ADDED**
 * Added test cases for test app
 * App directory structure has changed. But, no external effect.
 
