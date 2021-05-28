@@ -17,9 +17,6 @@ class ExposeApiModelMixin(object):
 
             # slug_field is application 'put', 'patch', 'delete' these methods
             "slug_field": "pk", # (NOT REQUIRED) DEFAULT [PK] (Must be model field, unique or primary key)
-            # This "queryset" is deprecated. Will be removed in future versions. Instead on this use the model's
-            # get_api_queryset method
-            "queryset": "",  # (NOT REQUIRED) default all
             "viewset_class": "",  # (NOT REQUIRED) BaseViewset class
             "serializer_class": "",  # (NOT REQUIRED) default BaseEntitySerializer
             "permission_classes": "",  # (NOT REQUIRED) default set from settings
@@ -40,9 +37,28 @@ class ExposeApiModelMixin(object):
         serializer fields. Or you can say exactly as same as serializer fields.
         :param kwargs: Currently nothing to receive on kwargs
         :return: a dictionary object with version number
+        The dictionary format should be like following...
+        Ex-1: { 'v1': ('field_1', 'field_2',), 'v2': ('field_1', 'field_2', 'field_3',) }
+        Ex-2: {
+                'v1': {
+                    'fields': ('field_1', 'field_2',),
+                    'read_only_fields': ('field_1',),
+                    'write_only_fields': ('field_xx',),
+                    'optional_fields': ('field_2',)
+                },
+                'v2': ('field_1', 'field_2', 'field_3',)
+            }
+        *Note:*
+            1. "read_only_fields" means those fields will not affect on the POST/PUT/PATCH method.
+            2. "write_only_fields" means the fields will not affect the GET method
+            3. "optional_fields" means it's not required on POST/PUT/PATCH
+            4. "fields" means all the fields those will be basically exposed the API.
         """
         versions = {}
         return versions
+
+    def _get_version_names(self):
+        pass
 
     @classmethod
     def api_prefetch_related_fields(cls):

@@ -91,7 +91,11 @@ class Post(ExposeApiModelMixin, models.Model):
         """
         versions = {
             'v1': ['id', 'author', 'title', 'description'],
-            'v2': ['pk', 'author', 'title', 'description', 'meta', 'photo']
+            'v2': {
+                'fields': ['pk', 'author', 'title', 'description', 'meta', 'photo'],
+                'read_only_fields': ['pk', 'meta', 'photo'],
+                'optional_fields': ['description', 'author']
+            }
         }
         return versions
 

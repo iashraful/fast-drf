@@ -98,9 +98,6 @@ class MyModel(ExposeApiModelMixin, models.Model):
 
             # slug_field is application 'put', 'patch', 'delete' these methods
             "slug_field": "pk", # (NOT REQUIRED) DEFAULT [PK] (Must be model field, unique or primary key)
-            # This "queryset" is deprecated. Will be removed in future versions. Instead on this use the model's
-            # get_api_queryset method
-            "queryset": "",  # (NOT REQUIRED) default all
             "viewset_class": "",  # (NOT REQUIRED) BaseViewset class
             "serializer_class": "",  # (NOT REQUIRED) default BaseEntitySerializer
             "permission_classes": "",  # (NOT REQUIRED) default set from settings
