@@ -5,6 +5,16 @@ It's easy and configurable.
 ### Full Documentation [here](https://fast-drf.readthedocs.io/en/latest/)
 ### Change Log is [here](https://github.com/iashraful/fast-drf/blob/master/CHANGELOG.md)
 
+### Features
+1. Runtime API creation without writing View, Serializer, Url, etc
+2. API versioning by default.
+3. Control fields on each versions
+4. An enhanced filtering support align with Django query filter.
+5. Customizable API URL and API Prefix.
+6. Options for Overriding Viewset, Serializer, Queryset
+7. Query optimization enabled for API with Django's `prefetch_related` and `select_related`
+8 Full control over project during making automated API. i.e: you can select an Django app to enable for making API.
+
 ### Quick Start
 * Install the library inside your  virtualenv by using pip `pip install fast-drf`
 * Add config for Fast DRF like following,
