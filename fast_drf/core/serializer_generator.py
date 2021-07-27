@@ -23,9 +23,22 @@ class SerializerGenerator(object):
         _this = self
         api_version_fields = self.model.api_version_fields() if hasattr(self.model, 'api_version_fields') else {}
         current_version_fields = api_version_fields.get(api_version, '__all__')
+        _read_only_fields = ()
+        _write_only_fields = ()
+        _optional_fields = ()
+        if isinstance(current_version_fields, dict):
+            _read_only_fields = current_version_fields.get('read_only_fields', [])
+            _write_only_fields = current_version_fields.get('write_only_fields', [])
+            _optional_fields = current_version_fields.get('optional_fields', [])
+            current_version_fields = current_version_fields.get('fields', [])
 
         class RuntimeModelSerializer(serializers.ModelSerializer):
             def __init__(self, instance=None, data=empty, **kwargs):
+                optional_fields = getattr(self.Meta, 'optional_fields', None)
+                if optional_fields:
+                    for key in optional_fields:
+                        if key in self.fields:
+                            self.fields[key].required = False
                 if data is not empty:
                     data = self.create_relational_data(data=data)
                 self.api_version = api_version
@@ -38,6 +51,9 @@ class SerializerGenerator(object):
             class Meta:
                 model = self.model
                 fields = current_version_fields
+                read_only_fields = _read_only_fields
+                write_only_fields = _write_only_fields
+                optional_fields = _optional_fields
 
             def create(self, validated_data: Any):
                 with transaction.atomic():

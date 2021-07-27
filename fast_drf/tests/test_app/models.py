@@ -69,9 +69,11 @@ class Post(ExposeApiModelMixin, models.Model):
 
         api_configs = {
             "api_url": "posts",
+            "slug_field": "title",
             # "viewset_class": PostAPIView,
             # "serializer_class": PostPrivateSerializer,
-            "allowed_methods": [HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value, HTTPVerbsEnum.PUT.value],
+            "allowed_methods": [HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value,
+                                HTTPVerbsEnum.PUT.value, HTTPVerbsEnum.DELETE.value],
         }
         return api_configs
 
@@ -91,7 +93,11 @@ class Post(ExposeApiModelMixin, models.Model):
         """
         versions = {
             'v1': ['id', 'author', 'title', 'description'],
-            'v2': ['pk', 'author', 'title', 'description', 'meta', 'photo']
+            'v2': {
+                'fields': ['pk', 'author', 'title', 'description', 'meta', 'photo'],
+                'read_only_fields': ['pk', 'meta', 'photo'],
+                'optional_fields': ['description', 'author']
+            }
         }
         return versions
 

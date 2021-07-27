@@ -56,16 +56,34 @@ def exposed_api(cls, *args, **kwargs):
 Now you will get API like, `/api/v1/an-awesome-api/`
 
 ## Version your API
-Suppose you have an API and your API using by so many client software. Now you found a bug or just need to remove some fields or add some fields. In that case your existing clients get interrupted. So, what you will do? Keep the old API and make a new one without extras hassle. Follow me,
+
+Suppose you have an API and your API using by so many client software. Now you found a bug or just need to remove some
+fields or add some fields. In that case your existing clients get interrupted. So, what you will do? Keep the old API
+and make a new one without extras hassle. Follow me,
+
 ```python
 @classmethod
 def api_version_fields(cls, **kwargs):
     return {
         'v1': ['id', 'name', 'custom_1', 'custom_2'],
-        'v2': ['id', 'name', 'something_else']
+        'v2': {
+            'fields': ('id', 'name', 'something_else', 'field_1', 'field_2', 'field_xx'),
+            'read_only_fields': ('field_1',),
+            'write_only_fields': ('field_xx',),
+            'optional_fields': ('field_2',)
+        },
     }
 ```
-**Note** You can pass list or tuple. But you must make sure that everthing you have passed into the each array that must me self attribute. For example, In this case `something_else` must be a model property, fields. You can write into model like following,
+Here, 
+1. **fields** means all the fields those will be basically exposed the API.  
+2. **read_only_fields** means those fields will not affect on the POST/PUT/PATCH method.  
+3. **write_only_fields** means the fields will not affect the GET method  
+4. **optional_fields** means it's not required on POST/PUT/PATCH  
+
+**Note** You can pass list or tuple. But you must make sure that everthing you have passed into the each array that must
+me self attribute. For example, In this case `something_else` must be a model property, fields. Remember model custom
+properties are always readonly fields. You can write into model like following,
+
 ```python
 @property
 def something_else(self):
@@ -73,10 +91,13 @@ def something_else(self):
 ```
 
 ## Enable Trailing Slash
+
 Set `APPEND_SLASH = True` at your settings.py
 
 ## You don't like `/api/` as a prefix
+
 Set you API prefix as your own like following. Just update into `settings.py`
+
 ```python
 FAST_DRF_CONFIG = {
     # ...
@@ -84,18 +105,22 @@ FAST_DRF_CONFIG = {
     # ...
 }
 ```
+
 Your API will look like, /rest-api/v1/users/
 
 ## Full Configuration
-* As you already installed the package, So, now update your every model or if you use base abstract model then it's good and less time you need. Update model like following,
+
+* As you already installed the package, So, now update your every model or if you use base abstract model then it's good
+  and less time you need. Update model like following,
+
 ```python
 from fast_drf.mixins.expose_api_model_mixin import ExposeApiModelMixin
 from django.db import models
 
 
 class MyModel(ExposeApiModelMixin, models.Model):
-    #... All yor fields
-    
+    # ... All yor fields
+
     # The following methods are available from model mixin
     @classmethod
     def exposed_api(cls, *args, **kwargs):
@@ -109,9 +134,6 @@ class MyModel(ExposeApiModelMixin, models.Model):
 
             # slug_field is application 'put', 'patch', 'delete' these methods
             "slug_field": "pk", # (NOT REQUIRED) DEFAULT [PK] (Must be model field, unique or primary key)
-            # This "queryset" is deprecated. Will be removed in future versions. Instead on this use the model's
-            # get_api_queryset method
-            "queryset": "",  # (NOT REQUIRED) default all
             "viewset_class": "",  # (NOT REQUIRED) BaseViewset class
             "serializer_class": "",  # (NOT REQUIRED) default BaseEntitySerializer
             "permission_classes": "",  # (NOT REQUIRED) default set from settings
@@ -129,19 +151,29 @@ class MyModel(ExposeApiModelMixin, models.Model):
 
 **That's it.** You can also override serializer class and viewset class
 
-
 ## Filtering on API
-Suppose you have a nice API like: `api/v1/posts/`. I assume your model have fields like, `title`, `description`, `author`(ForeignKey with User) etc. And you need to filter you data based on these fields. Where it comes default filtering enabled for all the model fields. You just need to pass the param into the API just like following...
+
+Suppose you have a nice API like: `api/v1/posts/`. I assume your model have fields like, `title`, `description`
+, `author`(ForeignKey with User) etc. And you need to filter you data based on these fields. Where it comes default
+filtering enabled for all the model fields. You just need to pass the param into the API just like following...
 
 ```
 http://yourdomain.com/api/v1/posts/?search=1&title:icontains=test&description:icontains=hello&author_id=10
 ```
-You don't need to pass all the fields. Just pass the param you want to be filtered out. One thing to remember is `search=1`. If you forget to put it, you won't be able to filter using all those params. So, `search=1` is important here. Another good news is, here it supports all the django filtering options like, `icontains`, `contains`, `exact`, `iexact` etc. Remember whenever you are going to use one of these you must seperate the filtered field with `:`. Like, `title:icontains`. That's it :)
 
+You don't need to pass all the fields. Just pass the param you want to be filtered out. One thing to remember
+is `search=1`. If you forget to put it, you won't be able to filter using all those params. So, `search=1` is important
+here. Another good news is, here it supports all the django filtering options like, `icontains`, `contains`, `exact`
+, `iexact` etc. Remember whenever you are going to use one of these you must seperate the filtered field with `:`.
+Like, `title:icontains`. That's it :)
 
 ## Optimizing the Number of Queries
-Do you like to optimize the number of queries over the API? If YES? you are on the right place. As we are working wit Django and DRF. We have a built in support for prefetch and select. To know more about this please visit https://docs.djangoproject.com/en/3.1/ref/models/querysets/#select-related.  
+
+Do you like to optimize the number of queries over the API? If YES? you are on the right place. As we are working wit
+Django and DRF. We have a built in support for prefetch and select. To know more about this please
+visit https://docs.djangoproject.com/en/3.1/ref/models/querysets/#select-related.  
 The following implementation works for our library.
+
 ```python
 class MyModel(ExposeApiModelMixin, models.Model):
     @classmethod
@@ -159,12 +191,15 @@ class MyModel(ExposeApiModelMixin, models.Model):
         # Only foreignkey fields
         return ['field_1', 'field_2']
 ```
-So, Where you have enabled the API and you have some relational fields you just need to declare them on the list to optimize the database joining.
 
+So, Where you have enabled the API and you have some relational fields you just need to declare them on the list to
+optimize the database joining.
 
 ## Override queryset for API
+
 The previous implementation was "queryset" on exposed_api method. But, it has some drawbacks. So, we are moving to
 `get_api_queryset` method. The implementation is simple. Let's dig into this.
+
 ```python
 @classmethod
 def get_api_queryset(cls, request):

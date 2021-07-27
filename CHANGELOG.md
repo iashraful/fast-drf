@@ -1,3 +1,11 @@
+## 2.1.4
+**ADDED**
+* Added support for read_only, write_only, optional fields passing on the API versions. 
+  As well as updated the documentation.  
+**FIXED**
+* Fixed API Filtering based on model fields
+* Fixed redundant kwargs passing through the viewset actions
+
 ## 2.1.3
 **FIXED**
 * Fixed double querying for list API
