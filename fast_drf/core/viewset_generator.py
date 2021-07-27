@@ -46,21 +46,21 @@ class APIViewSetGenerator(object):
                 return queryset
 
             def list(self, request, **kwargs):
-                base_queryset = self.get_queryset(request=request, **kwargs)
+                self.queryset = self.get_queryset(request=request, **kwargs)
                 request = kwargs.get('request', self.request)
                 try:
                     search_enabled = bool(eval(request.GET.get('search', '0')))
                     if search_enabled:
                         _filters = parse_filters(model=self.model, request=request)
-                        self.queryset = base_queryset.filter(_filters)
+                        self.queryset = self.queryset.filter(_filters)
                 except Exception as err:
-                    self.queryset = base_queryset
-                page = self.paginate_queryset(base_queryset)
+                    self.queryset = self.queryset
+                page = self.paginate_queryset(self.queryset)
                 if page is not None:
                     serializer = self.get_serializer(page, many=True)
                     return self.get_paginated_response(serializer.data)
 
-                serializer = self.get_serializer(base_queryset, many=True)
+                serializer = self.get_serializer(self.queryset, many=True)
                 return Response(serializer.data)
 
             def create(self, request, *args, **kwargs):

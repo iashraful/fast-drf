@@ -10,6 +10,7 @@ SECRET_KEY = os.environ.get('SECRECT_KEY', 'TEST KEY')
 DEBUG = bool(int(os.environ.get('DEBUG', '1')))
 
 ALLOWED_HOSTS = []
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Application definition
 
