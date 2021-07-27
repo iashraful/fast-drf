@@ -27,7 +27,10 @@ class SerializerGeneratorTestCase(FastDRFTestCase):
         self.assertTrue(issubclass(version_2_serializer_class, ModelSerializer))
         self.assertTrue(hasattr(version_2_serializer_class, 'Meta'))
         self.assertEqual(getattr(version_2_serializer_class.Meta, 'model'), self.model)
-        self.assertEqual(self.model.api_version_fields()['v2'], version_2_serializer_class.Meta.fields)
+        _initial_fields = self.model.api_version_fields()['v2']
+        if type(_initial_fields) == dict:
+            _initial_fields = _initial_fields['fields']
+        self.assertEqual(_initial_fields, version_2_serializer_class.Meta.fields)
 
     def test_get_relational_fields(self):
         fields = self.serializer_generator.get_relational_fields(**self.api_config_kwargs)
