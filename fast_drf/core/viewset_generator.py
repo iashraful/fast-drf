@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 
+from fast_drf.signals import *
 from fast_drf.utils.parser import parse_filters
 
 __author__ = 'Ashraful'
@@ -63,9 +64,11 @@ class APIViewSetGenerator(object):
                 return Response(serializer.data)
 
             def create(self, request, *args, **kwargs):
+                before_post_api.send(sender=self.model, requested_data=request.data)
                 serializer = self.serializer_class(data=request.data)
                 if serializer.is_valid(raise_exception=True):
-                    serializer.save()
+                    instance = serializer.save()
+                    after_post_api.send(sender=self.model, instance=instance, requested_data=request.data)
                     return Response(serializer.data)
                 return Response(serializer.data)
 
@@ -73,10 +76,24 @@ class APIViewSetGenerator(object):
                 return super(RunTimeViewset, self).retrieve(request, *args, **kwargs)
 
             def update(self, request, *args, **kwargs):
-                return super(RunTimeViewset, self).update(request, *args, **kwargs)
+                instance = self.get_object()
+                before_put_api.send(sender=self.model, instance=instance, requested_data=request.data)
+                serializer = self.serializer_class(data=request.data, instance=instance)
+                if serializer.is_valid(raise_exception=True):
+                    instance = serializer.save()
+                    after_put_api.send(sender=self.model, instance=instance, requested_data=request.data)
+                    return Response(serializer.data)
+                return Response(serializer.data)
 
             def partial_update(self, request, *args, **kwargs):
-                return super(RunTimeViewset, self).partial_update(request=request, *args, **kwargs)
+                instance = self.get_object()
+                before_patch_api.send(sender=self.model, instance=instance, requested_data=request.data)
+                serializer = self.serializer_class(data=request.data, instance=instance, partial=True)
+                if serializer.is_valid(raise_exception=True):
+                    instance = serializer.save()
+                    after_patch_api.send(sender=self.model, instance=instance, requested_data=request.data)
+                    return Response(serializer.data)
+                return Response(serializer.data)
 
             def destroy(self, request, *args, **kwargs):
                 return super(RunTimeViewset, self).destroy(request=request, *args, **kwargs)

@@ -69,7 +69,7 @@ class Post(ExposeApiModelMixin, models.Model):
 
         api_configs = {
             "api_url": "posts",
-            "slug_field": "title",
+            "slug_field": "pk",
             # "viewset_class": PostAPIView,
             # "serializer_class": PostPrivateSerializer,
             "allowed_methods": [HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value,
