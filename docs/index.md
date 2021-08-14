@@ -213,3 +213,17 @@ def get_api_queryset(cls, request):
     """
     return cls.objects.filter(your_filter='data')
 ```
+
+## Signals
+You have full access to your data. So, we are providing some sort of signals so that you can customize out of the box.
+### POST Method
+1. `before_post_api` triggers when a POST request starts. I mean before the save data. Here you got `sender` and `requested_data`
+2. `after_post_api` triggers when a POST request ends. I mean after the save data. Here you got `sender`, `requested_data` and `instance`
+
+### PUT Method
+1. `before_put_api` triggers when a PUT request starts. I mean before the save data. Here you got `sender`, `requested_data` and `instance`
+2. `after_put_api` triggers when a PUT request ends. I mean after the save data. Here you got `sender`, `requested_data` and `instance`
+
+### PATCH Method
+1. `before_patch_api` triggers when a PATCH request starts. I mean before the save data. Here you got `sender`, `requested_data` and `instance`
+2. `after_patch_api` triggers when a PATCH request ends. I mean after the save data. Here you got `sender`, `requested_data` and `instance`
