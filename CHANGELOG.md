@@ -1,3 +1,8 @@
+## 2.2.5
+**ADDED**
+* Added pre, post API signals for user end data customization. 
+
+
 ## 2.1.4
 **ADDED**
 * Added support for read_only, write_only, optional fields passing on the API versions. 
