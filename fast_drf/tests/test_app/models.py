@@ -1,5 +1,8 @@
+from typing import List
+
 from django.contrib.auth.models import User
 from django.db import models
+from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
 
 from fast_drf.mixins.expose_api_model_mixin import ExposeApiModelMixin
 from fast_drf.utils.enums import HTTPVerbsEnum
@@ -53,10 +56,12 @@ class PostMeta(models.Model):
 
 
 class Post(ExposeApiModelMixin, models.Model):
-    author = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(
+        UserProfile, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=256, null=True)
     description = models.TextField(null=True)
-    meta = models.ForeignKey(PostMeta, on_delete=models.SET_NULL, null=True, related_name='posts')
+    meta = models.ForeignKey(
+        PostMeta, on_delete=models.SET_NULL, null=True, related_name='posts')
     photo = models.ImageField(upload_to='post_photos/', null=True)
 
     class Meta:
@@ -108,3 +113,14 @@ class Post(ExposeApiModelMixin, models.Model):
     @classmethod
     def api_select_related_fields(cls):
         return ['meta', 'author']
+
+    @classmethod
+    def get_api_permissions(self, **kwargs) -> List[BasePermission]:
+        return {
+            'list': [AllowAny, ],
+            'retrieve': [AllowAny, ],
+            'create': [IsAuthenticated, ],
+            'update': [AllowAny, ],
+            'partial_update': [IsAuthenticated, ],
+            'destroy': [IsAuthenticated, ],
+        }

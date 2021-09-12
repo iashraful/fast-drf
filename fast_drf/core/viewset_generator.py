@@ -35,12 +35,22 @@ class APIViewSetGenerator(object):
             model = self.model
             lookup_field = self.lookup_field
 
+            def get_permissions(self, **kwargs):
+                _permissions = self.model.get_api_permissions(**kwargs)
+                if isinstance(_permissions, list):
+                    self.permission_classes = _permissions
+                if isinstance(_permissions, dict):
+                    if self.action in _permissions.keys():
+                        self.permission_classes = _permissions[self.action]
+                return super(RunTimeViewset, self).get_permissions(**kwargs)
+
             def get_queryset(self, *args, **kwargs):
                 _prefetch_related_fields = self.model.api_prefetch_related_fields()
                 _select_related_fields = self.model.api_select_related_fields()
                 queryset = self.model.get_api_queryset(*args, **kwargs)
                 if len(_prefetch_related_fields) > 0:
-                    queryset = queryset.prefetch_related(*_prefetch_related_fields)
+                    queryset = queryset.prefetch_related(
+                        *_prefetch_related_fields)
                 if len(_select_related_fields) > 0:
                     queryset = queryset.select_related(*_select_related_fields)
                 return queryset
@@ -51,7 +61,8 @@ class APIViewSetGenerator(object):
                 try:
                     search_enabled = bool(eval(request.GET.get('search', '0')))
                     if search_enabled:
-                        _filters = parse_filters(model=self.model, request=request)
+                        _filters = parse_filters(
+                            model=self.model, request=request)
                         self.queryset = self.queryset.filter(_filters)
                 except Exception as err:
                     self.queryset = self.queryset
@@ -64,11 +75,13 @@ class APIViewSetGenerator(object):
                 return Response(serializer.data)
 
             def create(self, request, *args, **kwargs):
-                before_post_api.send(sender=self.model, requested_data=request.data)
+                before_post_api.send(
+                    sender=self.model, requested_data=request.data)
                 serializer = self.serializer_class(data=request.data)
                 if serializer.is_valid(raise_exception=True):
                     instance = serializer.save()
-                    after_post_api.send(sender=self.model, instance=instance, requested_data=request.data)
+                    after_post_api.send(
+                        sender=self.model, instance=instance, requested_data=request.data)
                     return Response(serializer.data)
                 return Response(serializer.data)
 
@@ -77,21 +90,27 @@ class APIViewSetGenerator(object):
 
             def update(self, request, *args, **kwargs):
                 instance = self.get_object()
-                before_put_api.send(sender=self.model, instance=instance, requested_data=request.data)
-                serializer = self.serializer_class(data=request.data, instance=instance)
+                before_put_api.send(
+                    sender=self.model, instance=instance, requested_data=request.data)
+                serializer = self.serializer_class(
+                    data=request.data, instance=instance)
                 if serializer.is_valid(raise_exception=True):
                     instance = serializer.save()
-                    after_put_api.send(sender=self.model, instance=instance, requested_data=request.data)
+                    after_put_api.send(
+                        sender=self.model, instance=instance, requested_data=request.data)
                     return Response(serializer.data)
                 return Response(serializer.data)
 
             def partial_update(self, request, *args, **kwargs):
                 instance = self.get_object()
-                before_patch_api.send(sender=self.model, instance=instance, requested_data=request.data)
-                serializer = self.serializer_class(data=request.data, instance=instance, partial=True)
+                before_patch_api.send(
+                    sender=self.model, instance=instance, requested_data=request.data)
+                serializer = self.serializer_class(
+                    data=request.data, instance=instance, partial=True)
                 if serializer.is_valid(raise_exception=True):
                     instance = serializer.save()
-                    after_patch_api.send(sender=self.model, instance=instance, requested_data=request.data)
+                    after_patch_api.send(
+                        sender=self.model, instance=instance, requested_data=request.data)
                     return Response(serializer.data)
                 return Response(serializer.data)
 

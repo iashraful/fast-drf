@@ -1,3 +1,8 @@
+from typing import List
+
+from rest_framework.permissions import BasePermission
+
+
 class ExposeApiModelMixin(object):
     """
     ==== MODEL MIXIN ====
@@ -29,7 +34,7 @@ class ExposeApiModelMixin(object):
         return api_configs
 
     @classmethod
-    def api_version_fields(cls, **kwargs):
+    def api_version_fields(cls, **kwargs) -> dict:
         """
         *** DEFAULT VERSION `v1` ***
 
@@ -61,7 +66,7 @@ class ExposeApiModelMixin(object):
         pass
 
     @classmethod
-    def api_prefetch_related_fields(cls):
+    def api_prefetch_related_fields(cls) -> List[str]:
         """
         Prefetch related is used for prefeching the objects for Django Queryset. It saves a lot time
         of table joining and multiple queries.
@@ -72,8 +77,7 @@ class ExposeApiModelMixin(object):
         return []
 
     @classmethod
-    def api_select_related_fields(cls):
-
+    def api_select_related_fields(cls) -> List[str]:
         """
         Select related is used for prefeching the objects for Django Queryset. It saves a lot time
         of table joining and multiple queries.
@@ -89,3 +93,20 @@ class ExposeApiModelMixin(object):
         This method will be used for overriding the queryset for API.
         """
         return cls.objects.all()
+
+    @classmethod
+    def get_api_permissions(self, **kwargs) -> List[BasePermission]:
+        """
+        Return a List of permission classes. Also,
+        None Just means DEFAULT FROM SETTINGS
+        {
+            "list": [Permission Classes,],
+            "retrieve": [Permission Classes,],
+            "create": [Permission Classes,],
+            "update": [Permission Classes,],
+            "destroy": [Permission Classes,],
+            "partial_update": [Permission Classes,],
+        }
+        """
+
+        return None
