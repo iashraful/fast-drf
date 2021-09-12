@@ -1,8 +1,11 @@
 ## Why Fast DRF?
+
 Fast DRF(Django REST Framework) is for making REST API development quicker/faster with awesomeness of Django. It will
 help you to write less code and develop API fastest as you can. Also you can override everthing(queryset, view class,
 serializer, etc) you want.
+
 ### Features
+
 1. Runtime API creation without writing View, Serializer, Url, etc
 2. API versioning by default.
 3. Control fields on each versions
@@ -10,25 +13,30 @@ serializer, etc) you want.
 5. Customizable API URL and API Prefix.
 6. Options for Overriding Viewset, Serializer, Queryset
 7. Query optimization enabled for API with Django's `prefetch_related` and `select_related`
-8 Full control over project during making automated API. i.e: you can select an Django app to enable for making API.
+   8 Full control over project during making automated API. i.e: you can select an Django app to enable for making API.
 
 ## How it works?
-It has a plain and simple architecture. It brings your configuration and create a runtime serializer and a runtime viewset. So, there is no option to slow down your API. It's similar as native rest framework.  
 
-**Procedure of execution**  
-* Locate the enabled apps from settings. If not read all the apps from installed apps.(I always recommend to keep **ENABLED_APPS** in settings)  
-* Read configuration from each model.  
-* Create a runtime serializer and runtime view.  
-* Read REST framework configuration from settings.py and put them in viewset class. For example, You may have Custom Pagination class, Default Permission class like **IsAuthenticated** etc...  
-* Bind into urls. It's has a own router and the router return urlpatterns in a list.  
+It has a plain and simple architecture. It brings your configuration and create a runtime serializer and a runtime viewset. So, there is no option to slow down your API. It's similar as native rest framework.
+
+**Procedure of execution**
+
+- Locate the enabled apps from settings. If not read all the apps from installed apps.(I always recommend to keep **ENABLED_APPS** in settings)
+- Read configuration from each model.
+- Create a runtime serializer and runtime view.
+- Read REST framework configuration from settings.py and put them in viewset class. For example, You may have Custom Pagination class, Default Permission class like **IsAuthenticated** etc...
+- Bind into urls. It's has a own router and the router return urlpatterns in a list.
 
 ## Installation
-* Install from pypy  
+
+- Install from pypy
+
 ```bash
 pip install fast-drf
 ```
 
-* Edit your `settings.py` and add the following lines,
+- Edit your `settings.py` and add the following lines,
+
 ```python
 FAST_DRF_CONFIG = {
     'DEFAULT_APPLIED_APPS': (
@@ -37,7 +45,8 @@ FAST_DRF_CONFIG = {
 }
 ```
 
-* On your `urls.py`
+- On your `urls.py`
+
 ```
 from fast_drf.router import BasicRouter
 
@@ -45,7 +54,9 @@ urlpatterns = BasicRouter.get_urls()
 ```
 
 ## The minimal Configuration to expose an API.(Quick Start)
+
 Write the following classmethod into your model. and don't forget to extend from **ExposeApiModelMixin** your model.
+
 ```python
 @classmethod
 def exposed_api(cls, *args, **kwargs):
@@ -53,6 +64,7 @@ def exposed_api(cls, *args, **kwargs):
         'api_url': 'an-awesome-api'
     }
 ```
+
 Now you will get API like, `/api/v1/an-awesome-api/`
 
 ## Version your API
@@ -74,11 +86,13 @@ def api_version_fields(cls, **kwargs):
         },
     }
 ```
-Here, 
-1. **fields** means all the fields those will be basically exposed the API.  
-2. **read_only_fields** means those fields will not affect on the POST/PUT/PATCH method.  
-3. **write_only_fields** means the fields will not affect the GET method  
-4. **optional_fields** means it's not required on POST/PUT/PATCH  
+
+Here,
+
+1. **fields** means all the fields those will be basically exposed the API.
+2. **read_only_fields** means those fields will not affect on the POST/PUT/PATCH method.
+3. **write_only_fields** means the fields will not affect the GET method
+4. **optional_fields** means it's not required on POST/PUT/PATCH
 
 **Note** You can pass list or tuple. But you must make sure that everthing you have passed into the each array that must
 me self attribute. For example, In this case `something_else` must be a model property, fields. Remember model custom
@@ -110,7 +124,7 @@ Your API will look like, /rest-api/v1/users/
 
 ## Full Configuration
 
-* As you already installed the package, So, now update your every model or if you use base abstract model then it's good
+- As you already installed the package, So, now update your every model or if you use base abstract model then it's good
   and less time you need. Update model like following,
 
 ```python
@@ -211,15 +225,44 @@ def get_api_queryset(cls, request):
 ```
 
 ## Signals
+
 You have full access to your data. So, we are providing some sort of signals so that you can customize out of the box.
+
 ### POST Method
+
 1. `before_post_api` triggers when a POST request starts. I mean before the save data. Here you got `sender` and `requested_data`
 2. `after_post_api` triggers when a POST request ends. I mean after the save data. Here you got `sender`, `requested_data` and `instance`
 
 ### PUT Method
+
 1. `before_put_api` triggers when a PUT request starts. I mean before the save data. Here you got `sender`, `requested_data` and `instance`
 2. `after_put_api` triggers when a PUT request ends. I mean after the save data. Here you got `sender`, `requested_data` and `instance`
 
 ### PATCH Method
+
 1. `before_patch_api` triggers when a PATCH request starts. I mean before the save data. Here you got `sender`, `requested_data` and `instance`
 2. `after_patch_api` triggers when a PATCH request ends. I mean after the save data. Here you got `sender`, `requested_data` and `instance`
+
+## Permission for each action
+
+Think that you are developing some APIs where you will need different different permissions classes for same API. For example,
+You are making a blog application. Where posts will be publicly available and only registered user can add their posts and only user can update their posts. So, here's the outcome, We need three permissions classes,
+
+1. AllowAny
+2. IsAuthenticated
+3. IsPostOwner
+
+So, You just wrote one endpoint `/api/v1/posts/`. Here is the solution for you, You just need to write this on your model.
+
+```python
+@classmethod
+def get_api_permissions(self, **kwargs) -> List[BasePermission]:
+    return {
+        'list': [AllowAny, ],  # GET THE LISTS OF POSTS
+        'retrieve': [AllowAny, ],  # GET SPECIFIC POST DETAILS
+        'create': [IsAuthenticated, ], # POST CAN BE DONE BY REGISTERED USER ONLY
+        'update': [IsPostOwner, ],  # UPDATE, DELETE CAN ONLY BE DONE BY IT'S OWNER
+        'partial_update': [IsPostOwner, ],  # UPDATE, DELETE CAN ONLY BE DONE BY IT'S OWNER
+        'destroy': [IsPostOwner, ],  # UPDATE, DELETE CAN ONLY BE DONE BY IT'S OWNER
+    }
+```
