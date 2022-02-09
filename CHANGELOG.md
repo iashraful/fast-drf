@@ -1,3 +1,9 @@
+## 2.2.7
+
+**FIXED**
+
+- Fixed deprecated code to support latest Django.
+
 ## 2.2.6
 
 **ADDED**

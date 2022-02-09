@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='fast-drf',
-    version='2.2.6',
+    version='2.2.7',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',
@@ -24,6 +24,7 @@ setup(
         'Framework :: Django',
         'Framework :: Django :: 2.1',
         'Framework :: Django :: 3.0',
+        'Framework :: Django :: 4.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',

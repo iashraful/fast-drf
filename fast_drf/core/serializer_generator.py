@@ -2,7 +2,7 @@ from typing import Any
 
 from django.db import transaction
 from django.db.models import ForeignKey, Model, OneToOneField
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import empty
@@ -21,15 +21,19 @@ class SerializerGenerator(object):
         """
         # Define a protected _this to access outer scope
         _this = self
-        api_version_fields = self.model.api_version_fields() if hasattr(self.model, 'api_version_fields') else {}
+        api_version_fields = self.model.api_version_fields() if hasattr(
+            self.model, 'api_version_fields') else {}
         current_version_fields = api_version_fields.get(api_version, '__all__')
         _read_only_fields = ()
         _write_only_fields = ()
         _optional_fields = ()
         if isinstance(current_version_fields, dict):
-            _read_only_fields = current_version_fields.get('read_only_fields', [])
-            _write_only_fields = current_version_fields.get('write_only_fields', [])
-            _optional_fields = current_version_fields.get('optional_fields', [])
+            _read_only_fields = current_version_fields.get(
+                'read_only_fields', [])
+            _write_only_fields = current_version_fields.get(
+                'write_only_fields', [])
+            _optional_fields = current_version_fields.get(
+                'optional_fields', [])
             current_version_fields = current_version_fields.get('fields', [])
 
         class RuntimeModelSerializer(serializers.ModelSerializer):
@@ -42,7 +46,8 @@ class SerializerGenerator(object):
                 if data is not empty:
                     data = self.create_relational_data(data=data)
                 self.api_version = api_version
-                super(RuntimeModelSerializer, self).__init__(instance=instance, data=data, **kwargs)
+                super(RuntimeModelSerializer, self).__init__(
+                    instance=instance, data=data, **kwargs)
 
             @classmethod
             def get_api_version(cls):
@@ -57,7 +62,8 @@ class SerializerGenerator(object):
 
             def create(self, validated_data: Any):
                 with transaction.atomic():
-                    instance = super(RuntimeModelSerializer, self).create(validated_data=validated_data)
+                    instance = super(RuntimeModelSerializer, self).create(
+                        validated_data=validated_data)
                     return instance
 
             def update(self, instance: Model, validated_data: Any):
@@ -78,10 +84,12 @@ class SerializerGenerator(object):
                         _model = field.related_model
                         try:
                             # Creating related data here
-                            related_instance = _model.objects.create(**data[field.name])
+                            related_instance = _model.objects.create(
+                                **data[field.name])
                             data.pop(field.name)
                         except TypeError:
-                            raise ValidationError({'message': _('{0} contains invalid data.'.format(field.name))})
+                            raise ValidationError(
+                                {'message': _('{0} contains invalid data.'.format(field.name))})
                         # While no error and data has created then assign the PK to the serializer field.
                         data[field.name] = related_instance.pk
                 return data
@@ -91,5 +99,6 @@ class SerializerGenerator(object):
     def get_relational_fields(self, **kwargs):
         # Currently we only have support for creating One2One and ForeignKey field support
         _relational_fields = [OneToOneField, ForeignKey]
-        _fields = [f for f in self.model._meta.get_fields() if f.__class__ in _relational_fields]
+        _fields = [f for f in self.model._meta.get_fields(
+        ) if f.__class__ in _relational_fields]
         return _fields
