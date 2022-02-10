@@ -1,3 +1,9 @@
+## 2.2.8
+
+**UPDATED**
+
+- Updated runtime class name to avoid class conflict and others
+
 ## 2.2.7
 
 **FIXED**

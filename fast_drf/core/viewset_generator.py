@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
+from fast_drf.core.class_factory import class_factory
 
 from fast_drf.signals import *
 from fast_drf.utils.parser import parse_filters
@@ -117,4 +118,7 @@ class APIViewSetGenerator(object):
             def destroy(self, request, *args, **kwargs):
                 return super(RunTimeViewset, self).destroy(request=request, *args, **kwargs)
 
-        return RunTimeViewset
+        return class_factory(
+            class_name=f"{self.model.__name__}RuntimeViewset",
+            base_classes=(RunTimeViewset,)
+        )

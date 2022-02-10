@@ -7,6 +7,8 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import empty
 
+from .class_factory import class_factory
+
 
 class SerializerGenerator(object):
     def __init__(self, *args, **kwargs):
@@ -94,7 +96,10 @@ class SerializerGenerator(object):
                         data[field.name] = related_instance.pk
                 return data
 
-        return RuntimeModelSerializer
+        return class_factory(
+            class_name=f"{self.model.__name__}RuntimeSerializer",
+            base_classes=(RuntimeModelSerializer,)
+        )
 
     def get_relational_fields(self, **kwargs):
         # Currently we only have support for creating One2One and ForeignKey field support
