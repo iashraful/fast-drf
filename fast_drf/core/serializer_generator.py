@@ -97,7 +97,7 @@ class SerializerGenerator(object):
                 return data
 
         return class_factory(
-            class_name=f"{self.model.__name__}RuntimeSerializer",
+            class_name="{}RuntimeSerializer".format(self.model.__name__),
             base_classes=(RuntimeModelSerializer,)
         )
 

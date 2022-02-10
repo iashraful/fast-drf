@@ -119,6 +119,6 @@ class APIViewSetGenerator(object):
                 return super(RunTimeViewset, self).destroy(request=request, *args, **kwargs)
 
         return class_factory(
-            class_name=f"{self.model.__name__}RuntimeViewset",
+            class_name="{}RuntimeViewset".format(self.model.__name__),
             base_classes=(RunTimeViewset,)
         )

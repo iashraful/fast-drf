@@ -1,3 +1,9 @@
+## 2.2.9
+
+**FIXED**
+
+- Fixed python <3.5 formatting error.
+
 ## 2.2.8
 
 **UPDATED**
