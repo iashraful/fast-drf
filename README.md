@@ -17,6 +17,18 @@ It's easy and configurable.
 
 ### Quick Start
 * Install the library inside your  virtualenv by using pip `pip install fast-drf`
+* Add 'rest_framework' to `INSTALLED_APPS`
+* Add fast_drf.router.BasicRouter.get_urls() to the `urlpatterns` in `urls.py`, e.g.
+```python
+from django.contrib import admin
+from django.urls import path
+from fast_drf.router import BasicRouter
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+] + BasicRouter.get_urls()
+```
+
 * Add config for Fast DRF like following,
 ```python
 FAST_DRF_CONFIG = {
