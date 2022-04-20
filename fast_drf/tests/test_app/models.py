@@ -19,25 +19,11 @@ class UserProfile(ExposeApiModelMixin, models.Model):
     class Meta:
         app_label = 'test_app'
 
-    @classmethod
-    def exposed_api(cls, *args, **kwargs):
-        api_configs = {
-            "api_url": "user-profiles",
-        }
-        return api_configs
-
 
 class TestUser(UserProfile):
     class Meta:
         proxy = True
         app_label = 'test_app'
-
-    @classmethod
-    def exposed_api(cls, *args, **kwargs):
-        api_configs = {
-            "api_url": "test-users",
-        }
-        return api_configs
 
 
 class PostMeta(models.Model):

@@ -15,7 +15,7 @@ class ExposeApiModelMixin(object):
         """
         This method holds a bunch of API configs and return like following...
         {
-            "api_url": "",  # (REQUIRED)
+            "api_url": "",  # (NOT REQUIRED)
 
             # You must use from HTTPVerbsEnum. Like HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value
             "allowed_methods": ['get', 'post', 'put', 'patch', 'delete'], # (NOT REQUIRED)
@@ -30,7 +30,12 @@ class ExposeApiModelMixin(object):
         :param kwargs:
         :return: An empty Dictionary/False OR Full config dictionary.
         """
-        api_configs = {}
+        api_configs = {
+            "api_url": "{app_label}-{model_name}s".format(
+                app_label=cls._meta.app_label,
+                model_name=cls.__name__.lower()
+            )
+        }
         return api_configs
 
     @classmethod
