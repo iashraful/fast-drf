@@ -38,6 +38,7 @@ FAST_DRF_CONFIG = {
 }
 ```
 * Update your every model or if you use base abstract model then it's good and less time you need. Update model like following,
+**Overriding the `expose_api` classmethod is not necessary anymore. If you just inherit the `ExposeApiModelMixin` mixin class then your app will be detect a api url accordingly.**
 ```python
 from fast_drf.mixins.expose_api_model_mixin import ExposeApiModelMixin
 from django.db import models
@@ -53,7 +54,7 @@ class MyModel(ExposeApiModelMixin, models.Model):
         """
         This method holds a bunch of API configs and return like following...
         {
-            "api_url": "",  # (REQUIRED)
+            "api_url": "",  # (NOT REQUIRED)
 
             # You must use from HTTPVerbsEnum. Like HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value
             "allowed_methods": ['get', 'post', 'put', 'patch', 'delete'], # (NOT REQUIRED)

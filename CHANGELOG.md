@@ -1,3 +1,9 @@
+## 2.2.10
+
+**UPDATED**
+- Added support for automatic api_url generation.
+
+
 ## 2.2.9
 
 **FIXED**
