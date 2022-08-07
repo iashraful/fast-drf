@@ -12,8 +12,8 @@ It's easy and configurable.
 4. An enhanced filtering support align with Django query filter.
 5. Customizable API URL and API Prefix.
 6. Options for Overriding Viewset, Serializer, Queryset
-7. Query optimization enabled for API with Django's `prefetch_related` and `select_related`
-8 Full control over project during making automated API. i.e: you can select an Django app to enable for making API.
+7. Query optimization enabled for API with Django's `prefetch_related` and `select_related`  
+8. Full control over project during making automated API. i.e: you can select an Django app to enable for making API.
 
 ### Quick Start
 * Install the library inside your  virtualenv by using pip `pip install fast-drf`
