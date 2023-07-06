@@ -7,31 +7,26 @@
 ## 2.2.9
 
 **FIXED**
-
 - Fixed python <3.5 formatting error.
 
 ## 2.2.8
 
 **UPDATED**
-
 - Updated runtime class name to avoid class conflict and others
 
 ## 2.2.7
 
 **FIXED**
-
 - Fixed deprecated code to support latest Django.
 
 ## 2.2.6
 
 **ADDED**
-
 - Added support for actions based permissions for single API. This is so dynamic
 
 ## 2.2.5
 
 **ADDED**
-
 - Added pre, post API signals for user end data customization.
 
 ## 2.1.4
