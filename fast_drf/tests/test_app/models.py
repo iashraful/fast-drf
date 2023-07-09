@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union, Optional, Dict, Type
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -101,11 +101,11 @@ class Post(ExposeApiModelMixin, models.Model):
         return ['meta', 'author']
 
     @classmethod
-    def get_api_permissions(self, **kwargs) -> List[BasePermission]:
+    def get_api_permissions(cls, **kwargs) -> Dict[str, Union[List[Type[BasePermission]]]]:
         return {
             'list': [AllowAny, ],
             'retrieve': [AllowAny, ],
-            'create': [IsAuthenticated, ],
+            'create': [AllowAny, ],
             'update': [AllowAny, ],
             'partial_update': [IsAuthenticated, ],
             'destroy': [IsAuthenticated, ],

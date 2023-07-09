@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union, Optional, Dict, Type
 
 from rest_framework.permissions import BasePermission
 
@@ -100,7 +100,7 @@ class ExposeApiModelMixin(object):
         return cls.objects.all()
 
     @classmethod
-    def get_api_permissions(self, **kwargs) -> List[BasePermission]:
+    def get_api_permissions(cls, **kwargs) -> Dict[str, Union[List[Type[BasePermission]]]]:
         """
         Return a List of permission classes. Also,
         None Just means DEFAULT FROM SETTINGS

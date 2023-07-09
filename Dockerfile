@@ -6,5 +6,6 @@ RUN apk update && \
 
 WORKDIR /app/server
 COPY requirements.txt /app/server
-RUN pip3 install -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 #CMD [ "python /app/server/manage.py migrate" ]

@@ -3,7 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from fast_drf.core.serializer_generator import SerializerGenerator
 from .base import FastDRFTestCase
-from ..core.viewset_generator import APIViewSetGenerator
+from fast_drf.core.viewset_generator import APIViewSetGenerator
 
 
 class ViewsetGeneratorTestCase(FastDRFTestCase):
