@@ -185,7 +185,7 @@ Like, `title:icontains`. That's it :)
 
 Do you like to optimize the number of queries over the API? If YES? you are on the right place. As we are working wit
 Django and DRF. We have a built in support for prefetch and select. To know more about this please
-visit https://docs.djangoproject.com/en/3.1/ref/models/querysets/#select-related.  
+visit https://docs.djangoproject.com/en/dev/ref/models/querysets/#select-related.  
 The following implementation works for our library.
 
 ```python
