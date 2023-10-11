@@ -12,29 +12,29 @@ class UserProfile(ExposeApiModelMixin, models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     phone = models.CharField(max_length=32)
-    address = models.TextField(verbose_name='Address')
+    address = models.TextField(verbose_name="Address")
     dob = models.DateField(null=True)
-    photo = models.ImageField(upload_to='profile_photo', null=True)
+    photo = models.ImageField(upload_to="profile_photo", null=True)
 
     class Meta:
-        app_label = 'test_app'
+        app_label = "test_app"
 
 
 class TestUser(UserProfile):
     class Meta:
         proxy = True
-        app_label = 'test_app'
+        app_label = "test_app"
 
 
 class PostMeta(models.Model):
     meta_info = models.TextField(null=True, blank=True)
 
     class Meta:
-        app_label = 'test_app'
+        app_label = "test_app"
 
     @classmethod
     def api_prefetch_related_fields(cls):
-        return ['posts']
+        return ["posts"]
 
     @classmethod
     def api_select_related_fields(cls):
@@ -42,16 +42,16 @@ class PostMeta(models.Model):
 
 
 class Post(ExposeApiModelMixin, models.Model):
-    author = models.ForeignKey(
-        UserProfile, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=256, null=True)
     description = models.TextField(null=True)
     meta = models.ForeignKey(
-        PostMeta, on_delete=models.SET_NULL, null=True, related_name='posts')
-    photo = models.ImageField(upload_to='post_photos/', null=True)
+        PostMeta, on_delete=models.SET_NULL, null=True, related_name="posts"
+    )
+    photo = models.ImageField(upload_to="post_photos/", null=True)
 
     class Meta:
-        app_label = 'test_app'
+        app_label = "test_app"
 
     @classmethod
     def exposed_api(cls, *args, **kwargs):
@@ -63,8 +63,12 @@ class Post(ExposeApiModelMixin, models.Model):
             "slug_field": "pk",
             # "viewset_class": PostAPIView,
             # "serializer_class": PostPrivateSerializer,
-            "allowed_methods": [HTTPVerbsEnum.GET.value, HTTPVerbsEnum.POST.value,
-                                HTTPVerbsEnum.PUT.value, HTTPVerbsEnum.DELETE.value],
+            "allowed_methods": [
+                HTTPVerbsEnum.GET.value,
+                HTTPVerbsEnum.POST.value,
+                HTTPVerbsEnum.PUT.value,
+                HTTPVerbsEnum.DELETE.value,
+            ],
         }
         return api_configs
 
@@ -83,12 +87,12 @@ class Post(ExposeApiModelMixin, models.Model):
         :return: a dictionary object with version number
         """
         versions = {
-            'v1': ['id', 'author', 'title', 'description'],
-            'v2': {
-                'fields': ['pk', 'author', 'title', 'description', 'meta', 'photo'],
-                'read_only_fields': ['pk', 'meta', 'photo'],
-                'optional_fields': ['description', 'author']
-            }
+            "v1": ["id", "author", "title", "description"],
+            "v2": {
+                "fields": ["pk", "author", "title", "description", "meta", "photo"],
+                "read_only_fields": ["pk", "meta", "photo"],
+                "optional_fields": ["description", "author"],
+            },
         }
         return versions
 
@@ -98,15 +102,29 @@ class Post(ExposeApiModelMixin, models.Model):
 
     @classmethod
     def api_select_related_fields(cls):
-        return ['meta', 'author']
+        return ["meta", "author"]
 
     @classmethod
-    def get_api_permissions(cls, **kwargs) -> Dict[str, Union[List[Type[BasePermission]]]]:
+    def get_api_permissions(
+        cls, **kwargs
+    ) -> Dict[str, Union[List[Type[BasePermission]]]]:
         return {
-            'list': [AllowAny, ],
-            'retrieve': [AllowAny, ],
-            'create': [AllowAny, ],
-            'update': [AllowAny, ],
-            'partial_update': [IsAuthenticated, ],
-            'destroy': [IsAuthenticated, ],
+            "list": [
+                AllowAny,
+            ],
+            "retrieve": [
+                AllowAny,
+            ],
+            "create": [
+                AllowAny,
+            ],
+            "update": [
+                AllowAny,
+            ],
+            "partial_update": [
+                IsAuthenticated,
+            ],
+            "destroy": [
+                IsAuthenticated,
+            ],
         }

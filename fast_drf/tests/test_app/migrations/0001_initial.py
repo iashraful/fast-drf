@@ -7,7 +7,6 @@ import fast_drf.mixins.expose_api_model_mixin
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -16,44 +15,94 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='PostMeta',
+            name="PostMeta",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('meta_info', models.TextField(blank=True, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("meta_info", models.TextField(blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='UserProfile',
+            name="UserProfile",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=128)),
-                ('phone', models.CharField(max_length=32)),
-                ('address', models.TextField(verbose_name='Address')),
-                ('dob', models.DateField(null=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=128)),
+                ("phone", models.CharField(max_length=32)),
+                ("address", models.TextField(verbose_name="Address")),
+                ("dob", models.DateField(null=True)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
-            bases=(fast_drf.mixins.expose_api_model_mixin.ExposeApiModelMixin, models.Model),
+            bases=(
+                fast_drf.mixins.expose_api_model_mixin.ExposeApiModelMixin,
+                models.Model,
+            ),
         ),
         migrations.CreateModel(
-            name='Post',
+            name="Post",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=256, null=True)),
-                ('description', models.TextField(null=True)),
-                ('author', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='test_app.userprofile')),
-                ('meta', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='posts', to='test_app.postmeta')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=256, null=True)),
+                ("description", models.TextField(null=True)),
+                (
+                    "author",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="test_app.userprofile",
+                    ),
+                ),
+                (
+                    "meta",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="posts",
+                        to="test_app.postmeta",
+                    ),
+                ),
             ],
-            bases=(fast_drf.mixins.expose_api_model_mixin.ExposeApiModelMixin, models.Model),
+            bases=(
+                fast_drf.mixins.expose_api_model_mixin.ExposeApiModelMixin,
+                models.Model,
+            ),
         ),
         migrations.CreateModel(
-            name='TestUser',
-            fields=[
-            ],
+            name="TestUser",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('test_app.userprofile',),
+            bases=("test_app.userprofile",),
         ),
     ]

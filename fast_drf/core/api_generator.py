@@ -15,12 +15,23 @@ class APIGenerator(object):
         :return: a viewset class
         """
         # If not serializer is present
-        if not self.api_view.serializer_class or (
-                self.api_view.viewset_class and not self.api_view.viewset_class.serializer_class) or (
-                self.api_view.serializer_class and (
-                hasattr(self.api_view.serializer_class, 'get_api_version')
-                and self.api_view.serializer_class.get_api_version() != api_version)):
-            _serializer_class = self.get_runtime_serializer(api_version=api_version, **kwargs)
+        if (
+            not self.api_view.serializer_class
+            or (
+                self.api_view.viewset_class
+                and not self.api_view.viewset_class.serializer_class
+            )
+            or (
+                self.api_view.serializer_class
+                and (
+                    hasattr(self.api_view.serializer_class, "get_api_version")
+                    and self.api_view.serializer_class.get_api_version() != api_version
+                )
+            )
+        ):
+            _serializer_class = self.get_runtime_serializer(
+                api_version=api_version, **kwargs
+            )
             self.api_view.serializer_class = _serializer_class
             if self.api_view.viewset_class:
                 self.api_view.viewset_class.serializer_class = _serializer_class
@@ -37,8 +48,13 @@ class APIGenerator(object):
         :return: return a serializer class
         """
         if (self.api_view.serializer_class is None and self.api_view.model) or (
-                self.api_view.serializer_class and (
-                hasattr(self.api_view.serializer_class, 'get_api_version')
-                and self.api_view.serializer_class.get_api_version() != api_version)):
-            return self.serializer.make_runtime_serializer(api_version=api_version, **kwargs)
+            self.api_view.serializer_class
+            and (
+                hasattr(self.api_view.serializer_class, "get_api_version")
+                and self.api_view.serializer_class.get_api_version() != api_version
+            )
+        ):
+            return self.serializer.make_runtime_serializer(
+                api_version=api_version, **kwargs
+            )
         return self.api_view.serializer_class
