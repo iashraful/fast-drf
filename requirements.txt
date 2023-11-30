@@ -1,4 +1,0 @@
-Django>=2.1.7
-djangorestframework>=3.10
-psycopg2-binary>=2.8.5
-Pillow
