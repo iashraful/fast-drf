@@ -1,32 +1,44 @@
+## 2.2.11
+
+**UPDATED**
+
+- Formatting applied with black
+- Added Poetry based packaging
+
 ## 2.2.10
 
 **UPDATED**
-- Added support for automatic api_url generation.
 
+- Added support for automatic api_url generation.
 
 ## 2.2.9
 
 **FIXED**
+
 - Fixed python <3.5 formatting error.
 
 ## 2.2.8
 
 **UPDATED**
+
 - Updated runtime class name to avoid class conflict and others
 
 ## 2.2.7
 
 **FIXED**
+
 - Fixed deprecated code to support latest Django.
 
 ## 2.2.6
 
 **ADDED**
+
 - Added support for actions based permissions for single API. This is so dynamic
 
 ## 2.2.5
 
 **ADDED**
+
 - Added pre, post API signals for user end data customization.
 
 ## 2.1.4

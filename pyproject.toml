@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "fast-drf"
+version = "2.2.11"
+description = "A simple model based API configarator written in Python and based of Django and Django REST Framework"
+authors = ["Mohammad Ashraful <a5hraful@outlook.com>"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Django = "^2.0"
+djangorestframework = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+psycopg2-binary = "^2.9.9"
+black = "^23.11.0"
+pillow = "^10.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
