@@ -1,4 +1,3 @@
-
 from typing import Tuple
 
 
@@ -11,7 +10,9 @@ class BaseClass(object):
         self._type = classtype
 
 
-def class_factory(class_name: str, base_classes: Tuple[object] = (BaseClass,), **kwargs):
+def class_factory(
+    class_name: str, base_classes: Tuple[object] = (BaseClass,), **kwargs
+):
     """
     :param class_name: Name of the class which will be created
     :param base_classes: a list or tuple of base classes.

@@ -1,6 +1,6 @@
 import enum
 
-__author__ = 'Ashraful'
+__author__ = "Ashraful"
 
 
 class BaseEnum(enum.Enum):
@@ -8,8 +8,8 @@ class BaseEnum(enum.Enum):
 
 
 class HTTPVerbsEnum(BaseEnum):
-    GET = 'get'
-    POST = 'post'
-    PUT = 'put'
-    PATCH = 'patch'
-    DELETE = 'delete'
+    GET = "get"
+    POST = "post"
+    PUT = "put"
+    PATCH = "patch"
+    DELETE = "delete"

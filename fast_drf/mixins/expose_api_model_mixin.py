@@ -32,8 +32,7 @@ class ExposeApiModelMixin(object):
         """
         api_configs = {
             "api_url": "{app_label}-{model_name}s".format(
-                app_label=cls._meta.app_label,
-                model_name=cls.__name__.lower()
+                app_label=cls._meta.app_label, model_name=cls.__name__.lower()
             )
         }
         return api_configs
@@ -100,7 +99,9 @@ class ExposeApiModelMixin(object):
         return cls.objects.all()
 
     @classmethod
-    def get_api_permissions(cls, **kwargs) -> Dict[str, Union[List[Type[BasePermission]]]]:
+    def get_api_permissions(
+        cls, **kwargs
+    ) -> Dict[str, Union[List[Type[BasePermission]]]]:
         """
         Return a List of permission classes. Also,
         None Just means DEFAULT FROM SETTINGS

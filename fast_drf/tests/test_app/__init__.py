@@ -1,3 +1,3 @@
-__author__ = 'Ashraful'
+__author__ = "Ashraful"
 
-default_app_config = 'fast_drf.tests.test_app.apps.FastDRFTestsConfig'
+default_app_config = "fast_drf.tests.test_app.apps.FastDRFTestsConfig"
