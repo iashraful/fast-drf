@@ -4,6 +4,7 @@
 
 - Formatting applied with black
 - Added Poetry based packaging
+- Removed Python 3.7 support and added 3.11 support
 
 ## 2.2.10
 

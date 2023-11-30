@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fast-drf"
-version = "2.2.11"
+version = "2.2.12"
 description = "A simple model based API configarator written in Python and based of Django and Django REST Framework"
 authors = ["Mohammad Ashraful <a5hraful@outlook.com>"]
 license = "MIT License"
