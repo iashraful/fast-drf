@@ -2,7 +2,7 @@
 > Fast DRF is a small library for making API faster with Django and Django REST Framework.
 It's easy and configurable.
 
-### Full Documentation [here](https://fast-drf.readthedocs.io/en/latest/)
+### Full Documentation [here](https://fast-drf.readthedocs.io)
 ### Change Log is [here](https://github.com/iashraful/fast-drf/blob/master/CHANGELOG.md)
 
 ### Features
